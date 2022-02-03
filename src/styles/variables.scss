@@ -1,0 +1,28 @@
+$pallete0: #6e4597;
+$pallete1: #95b810;
+$pallete2: #93827f;
+$pallete3: #2f2f2f;
+$pallete4: #f7f7f2;
+
+@mixin borderRadius {
+  border-radius: 6px;
+}
+
+@mixin shadow {
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+}
+
+@mixin expandClickable($padding: 10px, $debug: false) {
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    bottom: -$padding;
+    left: -$padding;
+    right: -$padding;
+    top: -$padding;
+    @if $debug == true {
+      background: #e8347455;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+@use "../../styles/variables.scss";
+
+.page {
+  display: grid;
+  grid-template-rows: 60px auto;
+  height: 100vh;
+  .main {
+    display: grid;
+    width: 100vw;
+    align-items: center;
+  }
+}

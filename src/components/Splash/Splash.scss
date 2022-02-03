@@ -1,0 +1,17 @@
+.splash {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    .title {
+       color: #6E4597;
+       font-size: 21px;
+       margin-top: 70px;
+    }
+
+    .loading {
+      margin-top: 140px;
+    }
+}
+

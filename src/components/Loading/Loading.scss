@@ -1,0 +1,15 @@
+.centeredPage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+.centeredPage > div {
+  position: relative;
+  margin-left: -50%;
+  margin-top: -50%;
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+}

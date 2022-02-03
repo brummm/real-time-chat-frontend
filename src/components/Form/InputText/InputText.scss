@@ -1,0 +1,40 @@
+@import '../../../styles/variables.scss';
+.formGroup {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  input {
+    background: transparent;
+    border-bottom: 1px solid $pallete2;
+    color: $pallete2;
+    font-size: 16px;
+    outline: 0;
+    transition: border-color .2s;
+    width: 100%;
+    &::placeholder {
+      color: transparent;
+    }
+
+    &:placeholder-shown ~ label {
+      cursor: text;
+      font-size: 16px;
+      top: 20px;
+    }
+
+    &:focus {
+      ~ label {
+        // ?
+      }
+      padding-bottom: 6px;
+      border-width: 2px;
+    }
+  }
+
+  label {
+    display: block;
+    position: absolute;
+    font-size: 16px;
+    top: 0;
+    transition: .2s;
+  }
+}

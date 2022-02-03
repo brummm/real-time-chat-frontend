@@ -1,0 +1,18 @@
+@import "../../styles/variables.scss";
+.signInOrSignUp {
+  .container {
+    padding: 17px;
+    position: relative;
+    .title {
+      color: $pallete0;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .container {
+      @include borderRadius;
+      @include shadow;
+      background-color: $pallete4;
+      padding: 50px 38px;
+    }
+  }
+}
