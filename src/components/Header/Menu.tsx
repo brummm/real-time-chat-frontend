@@ -18,7 +18,7 @@ export const Menu: React.FC = () => {
           openMenu();
         }}
       >
-        <DotsVertical width={30} height={30} color="#F7F7F2" />
+        <DotsVertical width={30} height={30} fill="#F7F7F2" />
       </button>
       {opened && (
         <div
@@ -30,6 +30,7 @@ export const Menu: React.FC = () => {
         ></div>
       )}
       <ul className={opened ? "opened" : ""}>
+        <li>Logout</li>
         <li>Credits</li>
       </ul>
     </nav>

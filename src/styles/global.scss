@@ -1,21 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap");
-
+@import './variables.scss';
 * {
   box-sizing: border-box;
   border: none;
+  color: inherit;
   font-family: "Roboto Slab", serif;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-html:before {
+body:before {
   background: url("../images/background.png");
   content: "";
   opacity: .06;
 
   display: block;
-  position: absolute;
+  position: fixed;
 
   top: 0;
   left: 0;
@@ -25,6 +26,8 @@ html:before {
 }
 
 html {
+  background-color: $pallete4;
+  color: $pallete3;
   height: 100%;
   overflow-x: hidden;
 }

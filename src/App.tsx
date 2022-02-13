@@ -1,34 +1,33 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./App.css";
-import SignInOrSignUp from "./components/SignInOrSignUp";
 import Splash from "./components/Splash";
-import { checkSession } from "./lib/api";
+import {
+  checkSession as checkSessionApi,
+  makeGet,
+  useAutoLoadAPI,
+} from "./lib/api";
 
 export const App: React.FC = () => {
-  const [isLogged, setIsLogged] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const navigate = useNavigate();
+  const [loading, data, error] = useAutoLoadAPI(() => {
+    return makeGet("/users/session");
+  });
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  );
 
   useEffect(() => {
-    checkSession().then(response => {
-      setIsLoading(false);
-      if (response === null) {
-        setErrorMessage("There was a error trying to check your user. Please, reload the application.");
-        return;
-      }
-      if (response === true) {
-        setIsLogged(true);
-      }
-    })
-  }, [])
+    if (data.success) {
+      navigate("/chats");
+    } else {
+      setErrorMessage(
+        "There was a error trying to check your user. Please, reload the application."
+      );
+    }
+  });
 
-
-  return (<div className="App">
-    {errorMessage && <p>{errorMessage}</p>}
-    {isLoading && <Splash />}
-    {!isLogged && <SignInOrSignUp /> }
-    {isLogged && <p>ta logado</p>}
-    </div>);
-}
+  return <Splash isLoading={loading} />;
+};
 
 export default App;

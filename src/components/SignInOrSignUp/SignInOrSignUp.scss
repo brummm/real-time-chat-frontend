@@ -1,5 +1,5 @@
 @import "../../styles/variables.scss";
-.signInOrSignUp {
+.SignInOrSignUp {
   .container {
     padding: 17px;
     position: relative;
@@ -13,6 +13,28 @@
       @include shadow;
       background-color: $pallete4;
       padding: 50px 38px;
+
+      form {
+        > .input {
+          margin-bottom: 35px;
+        }
+
+        > .button {
+          display: flex;
+          justify-content: center;
+          padding: 13px 0 60px;
+        }
+
+        > div.link {
+          display: flex;
+          justify-content: center;
+          a {
+            @include expandClickable;
+            color: $pallete0;
+            text-decoration: underline;
+          }
+        }
+      }
     }
   }
 }

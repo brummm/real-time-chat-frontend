@@ -7,6 +7,10 @@
   .main {
     display: grid;
     width: 100vw;
-    align-items: center;
+    position: relative;
+    z-index: 100;
+    &.middle {
+      align-items: center;
+    }
   }
 }

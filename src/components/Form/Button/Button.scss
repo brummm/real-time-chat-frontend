@@ -1,0 +1,16 @@
+@import '../../../styles/variables.scss';
+.Button {
+  button {
+    @include borderRadius;
+    align-items: center;
+    background-color: $pallete1;
+    color: $pallete4;
+    display: flex;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px 20px;
+    .icon {
+      margin-right: 9px;
+    }
+  }
+}

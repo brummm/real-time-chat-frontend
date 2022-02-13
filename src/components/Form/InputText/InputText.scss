@@ -1,32 +1,39 @@
-@import '../../../styles/variables.scss';
-.formGroup {
+@import "../../../styles/variables.scss";
+.InputText {
   position: relative;
   padding: 15px 0 0;
   margin-top: 10px;
+
   input {
     background: transparent;
     border-bottom: 1px solid $pallete2;
-    color: $pallete2;
     font-size: 16px;
     outline: 0;
-    transition: border-color .2s;
+    padding-bottom: 4px;
+    transition: border-color 0.2s;
     width: 100%;
     &::placeholder {
       color: transparent;
     }
 
     &:placeholder-shown ~ label {
+      color: $pallete3;
       cursor: text;
       font-size: 16px;
-      top: 20px;
+      top: 16px;
     }
 
     &:focus {
       ~ label {
         // ?
       }
-      padding-bottom: 6px;
-      border-width: 2px;
+      border-color: $pallete3;
+    }
+
+    ~ label {
+      color: $pallete2;
+      font-size: 12px;
+      top: 0;
     }
   }
 
@@ -35,6 +42,27 @@
     position: absolute;
     font-size: 16px;
     top: 0;
-    transition: .2s;
+    transition: 0.2s;
+  }
+
+  .error {
+    color: $pallete0;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 6px;
+  }
+
+  .icon {
+    margin-top: -2px;
+    position: absolute;
+  }
+
+  &.hasIcon {
+    input {
+      padding-left: 22px;
+      &:placeholder-shown ~ label {
+        padding-left: 22px;
+      }
+    }
   }
 }
