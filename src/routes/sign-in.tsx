@@ -1,7 +1,10 @@
-import SignIn from "../components/SignInOrSignUp/SignIn";
+import Page from "../components/Page";
+import SignIn from "../components/User/SignInOrSignUp/SignIn";
 
 export default function SignInRoute() {
   return (
-    <SignIn />
+    <Page>
+      <SignIn />
+    </Page>
   );
 }

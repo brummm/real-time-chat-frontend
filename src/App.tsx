@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
+import ErrorMessage from "./components/ErrorMessage";
 import Splash from "./components/Splash";
 import {
-  checkSession as checkSessionApi,
   makeGet,
-  useAutoLoadAPI,
+  useAutoLoadAPI
 } from "./lib/api";
 
 export const App: React.FC = () => {
@@ -13,19 +13,20 @@ export const App: React.FC = () => {
   const [loading, data, error] = useAutoLoadAPI(() => {
     return makeGet("/users/session");
   });
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(
-    undefined
-  );
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    if (data.success) {
+    if (data?.success) {
       navigate("/chats");
-    } else {
+    }
+    if (error || !data?.success) {
       setErrorMessage(
         "There was a error trying to check your user. Please, reload the application."
       );
     }
-  });
+  }, [data, error]);
+
+  if (errorMessage !== "") return <ErrorMessage message={errorMessage} />;
 
   return <Splash isLoading={loading} />;
 };

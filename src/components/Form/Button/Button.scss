@@ -1,6 +1,6 @@
 @import '../../../styles/variables.scss';
 .Button {
-  button {
+  button, a {
     @include borderRadius;
     align-items: center;
     background-color: $pallete1;
@@ -9,6 +9,7 @@
     font-size: 20px;
     font-weight: bold;
     padding: 10px 20px;
+    text-decoration: none;
     .icon {
       margin-right: 9px;
     }

@@ -1,32 +1,28 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { makeGet, useAutoLoadAPI } from "../../../lib/api";
-import Button from "../../Form/Button";
+import ErrorMessage from "../../ErrorMessage";
+import { ButtonLink } from "../../Form/Button";
 import { Loading } from "../../Loading";
 import NoData from "../../NoData";
+import PageOverlay from "../../Page/PageOverlay";
+import FindUser from "../../User/FindUser";
 
 export const ChatList: React.FC = () => {
   const [loading, data, error] = useAutoLoadAPI(() => {
     return makeGet("/chats");
   });
 
-  const navigate = useNavigate();
-
   if (loading) return <Loading size="medium" />;
-  // TODO: make error component
-  if (error) return <p>There was a error</p>;
+  if (error) return <ErrorMessage message="There was a error" />;
   if (!data) return null;
   if (data.chats.length === 0)
     return (
       <NoData>
         <p>You still have no chats.</p>
-        <Button
-          type="button"
-          label="Start One"
-          onClick={() => {
-            navigate("/chat/new");
-          }}
-        />
+        <ButtonLink href="#new-chat">Start One</ButtonLink>
+        <PageOverlay title='Find user to start chatting' hash="#new-chat">
+					<FindUser />
+				</PageOverlay>
       </NoData>
     );
 

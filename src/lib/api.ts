@@ -56,31 +56,55 @@ export const signIn = async (
   }
 };
 
-export const useLoadAPI = (fetchFn: CallableFunction): [CallableFunction, boolean, any, boolean] => {
+export const fetchUserAPI = (userName: string): Promise<Response> => {
+  return makeGet(`/users/profile/${userName}`);
+};
+
+export const fetchUser = async (userName: string): Promise<User | null | undefined> => {
+  try {
+    const response = await fetchUserAPI(userName);
+    if (!response.ok) {
+      return null;
+    }
+    const { user } = await response.json();
+    return user as User;
+  } catch (e: unknown) {
+    console.error(e);
+    return null;
+  }
+};
+
+export const useLoadAPI = (
+  fetchFn: CallableFunction
+): [CallableFunction, boolean, any, boolean] => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState(false);
   const [data, setData] = useState<unknown | null>(null);
 
   const call = async () => {
+    setLoading(true);
+    setError(false);
+    setData(null);
     try {
       const response = await fetchFn();
-      setLoading(false);
       if (!response.ok) {
-
         throw Error();
       }
       setData(await response.json());
     } catch (e: any) {
       setError(true);
     }
+    setLoading(false);
   };
   return [call, loading, data, error];
 };
 
-export const useAutoLoadAPI = (fetchFn: CallableFunction): [boolean, any, boolean] => {
+export const useAutoLoadAPI = (
+  fetchFn: CallableFunction
+): [boolean, any, boolean] => {
   const [call, loading, data, error] = useLoadAPI(fetchFn);
   useEffect(() => {
     call();
-  }, [])
+  }, []);
   return [loading, data, error];
 };
