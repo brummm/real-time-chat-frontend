@@ -1,28 +1,40 @@
-import { Search, User } from "@styled-icons/boxicons-regular";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { fetchUser, fetchUserAPI, useLoadAPI } from "../../../lib/api";
-import { validateUsername } from "../../../lib/models/user";
-import ErrorMessage from "../../ErrorMessage";
+import { Search } from "@styled-icons/boxicons-regular";
+import { User as UserIcon } from "@styled-icons/boxicons-regular/User";
+import React, { useCallback, useState } from "react";
+import { fetchUserAPI, useLoadAPI } from "../../../lib/api";
+import { User, validateUsername } from "../../../lib/models/user";
+import ErrorMessage from "../../Error/ErrorMessage";
 import Button from "../../Form/Button";
 import InputText, { InputTextState } from "../../Form/InputText";
+import Loading from "../../Loading";
+import UserCard from "../UserCard";
+import "./FindUser.scss";
 
-export const FindUser: React.FC = () => {
+export const FindUser: React.FC<{
+  selectUserCallback: (user: User) => void;
+}> = ({ selectUserCallback }) => {
   const [formData, setFormData] = useState<InputTextState>({});
   const [call, loading, data, error] = useLoadAPI(() => {
     return fetchUserAPI(formData.username.value);
   });
-  const navigate = useNavigate();
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (formData.username.valid) call();
-  };
 
-  useEffect(() => {
-    if (data) {
-      navigate(`/chats/${formData.username.value}`);
-    }
-  }, [data]);
+  const onSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      if (formData.username.valid) call();
+    },
+    [formData]
+  );
+
+  const onFoundUserClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      if (selectUserCallback) {
+        selectUserCallback(data.user);
+      }
+    },
+    [selectUserCallback, data]
+  );
 
   return (
     <div className="FindUser">
@@ -32,14 +44,25 @@ export const FindUser: React.FC = () => {
             label="Username"
             validate={validateUsername}
             name="username"
-            icon={User}
+            icon={UserIcon}
             state={[formData, setFormData]}
           />
         </div>
         <div className="button">
           <Button label="Find User" type="submit" icon={Search} />
+          {loading && (
+            <div className="loading">
+              <Loading size="extra-small" />
+            </div>
+          )}
         </div>
         {error && <ErrorMessage message="Usuário não encontrado." />}
+
+        {data && (
+          <button className="user" onClick={onFoundUserClick}>
+            <UserCard user={data.user} />
+          </button>
+        )}
       </form>
     </div>
   );

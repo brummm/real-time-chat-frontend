@@ -18,7 +18,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
   const { icon: Icon, label, type = "button" } = props;
   return (
     <div className="Button">
-      <button {...props}>
+      <button {...props} type={type}>
         {Icon && (
           <div className="icon">
             <Icon width={22} fill="#f7f7f2" />

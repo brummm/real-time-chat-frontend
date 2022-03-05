@@ -1,0 +1,28 @@
+@import '../../../styles/variables.scss';
+.UserCard {
+  align-items: flex-end;
+  display: flex;
+  text-align: left;
+
+  figure {
+    height: 50px;
+    width: 50px;
+  }
+
+  div.data {
+    padding-left: 9px;
+    p {
+      color: $pallete2;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 0;
+      margin-bottom: 4px;
+    }
+
+    h1 {
+      font-size: 14px;
+      font-weight: normal;
+      margin: 0;
+    }
+  }
+}

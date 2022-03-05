@@ -1,0 +1,8 @@
+@import "../../../styles/variables.scss";
+
+.UserAvatar {
+  figure {
+    @include borderRadius;
+    background-color: $pallete2;
+  }
+}

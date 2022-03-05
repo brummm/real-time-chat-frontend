@@ -1,0 +1,29 @@
+@import '../../../styles/variables.scss';
+
+.ChatHeader {
+  align-items: center;
+  color: $pallete4;
+  display: flex;
+
+  .back {
+    @include expandClickable;
+    display: block;
+    height: 26px;
+    width: 16px;
+  }
+
+  figure {
+    @include borderRadius;
+    background-color: $pallete4;
+    color: $pallete2;
+    height: 38px;
+    margin-left: 20px;
+    width: 38px;
+  }
+
+  h1 {
+    font-size: 20px;
+    margin-left: 11px;
+  }
+
+}

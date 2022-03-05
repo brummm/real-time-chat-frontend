@@ -4,12 +4,21 @@ $pallete2: #93827f;
 $pallete3: #2f2f2f;
 $pallete4: #f7f7f2;
 
+$borderRadius: 6px;
 @mixin borderRadius {
-  border-radius: 6px;
+  border-radius: $borderRadius;
 }
 
 @mixin shadow {
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+}
+
+@mixin innerShadow {
+  box-shadow: inset 0px -1px 1px rgba(0, 0, 0, 0.25);
+}
+
+@mixin invertedInnerShadow {
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.25);
 }
 
 @mixin expandClickable($padding: 10px, $debug: false) {

@@ -1,16 +1,22 @@
 import { LogInCircle, MailSend } from "@styled-icons/boxicons-regular";
 import { Lock } from "@styled-icons/boxicons-solid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signIn } from "../../../lib/api";
+import { useUserContext } from "../../../contexts/user-context";
+import { Api, useLoadAPI } from "../../../lib/api";
 import { validateEmail, validatePassword } from "../../../lib/models/user";
 import Button from "../../Form/Button";
 import InputText, { InputTextState } from "../../Form/InputText";
+import Loading from "../../Loading";
 import "./SignInOrSignUp.scss";
 
 export const SignIn: React.FC = () => {
   const [formData, setFormData] = useState<InputTextState>({});
   const navigate = useNavigate();
+  const { setUser } = useUserContext();
+  const [signIn, loading, data, error] = useLoadAPI((params: any) =>
+    Api.post("/users/login", params)
+  );
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -20,11 +26,17 @@ export const SignIn: React.FC = () => {
     for (let field in formData) {
       data[field] = formData[field].value;
     }
-    const response = await signIn(data);
-    if (response) {
+    signIn(data);
+  };
+
+  useEffect(() => {
+    if (data && data.user) {
+      setUser(data.user);
       navigate("/chats");
     }
-  };
+  }, [data, setUser]);
+
+  // TODO: show error
   return (
     <div className="SignInOrSignUp">
       <div className="container">
@@ -54,15 +66,16 @@ export const SignIn: React.FC = () => {
               <Button label="Sign me In" type="submit" icon={LogInCircle} />
             </div>
             <div className="link">
-              <a
+              <button
                 onClick={(e) => {
                   e.preventDefault();
                 }}
               >
                 I want to sign up.
-              </a>
+              </button>
             </div>
           </form>
+          {loading && <Loading />}
         </div>
       </div>
     </div>

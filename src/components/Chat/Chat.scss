@@ -1,0 +1,17 @@
+@import "../../styles/variables.scss";
+
+.Chat {
+  display: grid;
+  grid-template-rows: auto 60px;
+  &.mediumMessage {
+    grid-template-rows: auto 82px;
+  }
+  &.largeMessage {
+    grid-template-rows: auto 104px;
+  }
+  .messages {
+  }
+  .sendMessage {
+    background-color: red;
+  }
+}

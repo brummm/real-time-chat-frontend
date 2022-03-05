@@ -61,7 +61,7 @@ export const validatePassword = (input: string) => {
 };
 
 export interface User {
-  id: string;
+  _id: string;
   firstName: string;
   lastName: string;
   userName: string;

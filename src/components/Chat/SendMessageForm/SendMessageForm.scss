@@ -1,0 +1,45 @@
+@import "../../../styles/variables.scss";
+
+.SendMessageForm {
+  background-color: $pallete0;
+  display: flex;
+  min-height: 60px;
+  overflow: hidden;
+  padding: 10px 16px;
+
+  .messageInput {
+    @include invertedInnerShadow;
+    $lineHeight: 22px;
+    $padding: 9px;
+
+    background-color: $pallete4;
+    border: 0;
+    border-radius: $borderRadius 0 0 $borderRadius;
+    margin: 0;
+    padding: $padding;
+    flex: 1;
+    font-size: 14px;
+    line-height: $lineHeight;
+    max-height: calc($lineHeight * 3 + $padding * 2);
+    min-height: 40px;
+    outline: none;
+    overflow-y: auto;
+
+    transition: all ease-out 150ms;
+
+    &:empty:not(:focus)::before {
+      color: #93827F;
+      content: attr(placeholder);
+    }
+  }
+
+  button {
+    @include innerShadow;
+    background-color: $pallete1;
+    border-radius: 0 $borderRadius $borderRadius 0;
+    box-sizing: content-box;
+    color: $pallete4;
+    padding: 0;
+    width: 40px;
+  }
+}

@@ -1,34 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import ErrorMessage from "./components/ErrorMessage";
-import Splash from "./components/Splash";
-import {
-  makeGet,
-  useAutoLoadAPI
-} from "./lib/api";
+import { UserContext } from "./contexts/user-context";
+import { User } from "./lib/models/user";
+import ChatRoute from "./routes/chat";
+import ChatsRoute from "./routes/chats";
+import HomeRoute from "./routes/home";
+import SignInRoute from "./routes/sign-in";
 
 export const App: React.FC = () => {
-  const navigate = useNavigate();
-  const [loading, data, error] = useAutoLoadAPI(() => {
-    return makeGet("/users/session");
-  });
-  const [errorMessage, setErrorMessage] = useState("");
-
-  useEffect(() => {
-    if (data?.success) {
-      navigate("/chats");
-    }
-    if (error || !data?.success) {
-      setErrorMessage(
-        "There was a error trying to check your user. Please, reload the application."
-      );
-    }
-  }, [data, error]);
-
-  if (errorMessage !== "") return <ErrorMessage message={errorMessage} />;
-
-  return <Splash isLoading={loading} />;
+  const [user, setUser] = useState<User | undefined>();
+  return (
+    <UserContext>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomeRoute />} />
+          <Route path="/sign-in" element={<SignInRoute />} />
+          <Route path="/chats" element={<ChatsRoute />} />
+          <Route path="/chats/:chatId" element={<ChatRoute />} />
+        </Routes>
+      </BrowserRouter>
+    </UserContext>
+  );
 };
 
 export default App;

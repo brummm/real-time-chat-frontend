@@ -1,15 +1,21 @@
-import React, { useEffect, useState } from "react";
-import Header from "../Header";
+import React, { ReactElement } from "react";
+import DefaultHeader from "../Header";
 import "./Page.scss";
 
 export interface PageProps {
-  variation?: "top" | "middle"
+  variation?: "top" | "middle";
+  header?: ReactElement;
 }
-export const Page: React.FC<PageProps> = ({ children, variation="middle" }) => {
+export const Page: React.FC<PageProps> = ({
+  children,
+  variation = "middle",
+  header = <DefaultHeader />,
+}) => {
+  const Header = header;
 
   return (
     <div className="page">
-      <Header />
+      {Header}
       <main className={`main ${variation}`}>{children}</main>
     </div>
   );

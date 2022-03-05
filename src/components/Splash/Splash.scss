@@ -4,6 +4,8 @@
     flex-direction: column;
     justify-content: center;
     height: 100vh;
+    position: relative;
+    z-index: 9;
     .title {
        color: #6E4597;
        font-size: 21px;

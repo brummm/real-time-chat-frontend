@@ -25,7 +25,7 @@ export const PageOverlay: React.FC<Props> = ({ title, children, hash }) => {
     }
 
     setVisible(_visible);
-  }, []);
+  }, [hash]);
 
   useEffect(() => {
     window.addEventListener("hashchange", hashChange);
@@ -33,7 +33,7 @@ export const PageOverlay: React.FC<Props> = ({ title, children, hash }) => {
     return () => {
       window.removeEventListener("hashchange", hashChange);
     };
-  }, []);
+  }, [hashChange]);
 
   if (!visible) {
     return null;

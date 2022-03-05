@@ -1,0 +1,22 @@
+@import "../../../styles/variables.scss";
+
+.FindUser {
+  .button {
+    align-items: center;
+    display: flex;
+    margin: 16px 0;
+    .loading {
+      padding-left: 16px;
+    }
+  }
+
+  .user {
+    @include shadow;
+    @include borderRadius;
+    background-color: #fff;
+    display: block;
+    margin-bottom: 9px;
+    padding: 9px;
+    text-decoration: none;
+  }
+}
