@@ -1,6 +1,6 @@
 import React from "react";
-import Page from "../../Page";
-import ErrorMessage from "../ErrorMessage";
+import Page from "../../Page/Page";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 export const ErrorPage: React.FC<{ message: string }> = ({ message }) => {
   return (

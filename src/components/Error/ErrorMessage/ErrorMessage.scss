@@ -1,0 +1,27 @@
+@import "../../../styles/variables.scss";
+
+.ErrorMessage {
+  @include borderRadius;
+  background-color: #fde9dd;
+  position: relative;
+  padding: 13px;
+  .message {
+    align-items: center;
+    display: flex;
+    figure {
+      background-color: #fff;
+      border-radius: 50%;
+      display: grid;
+      height: 36px;
+      place-items: center;
+      width: 36px;
+    }
+    span {
+      font-weight: bold;
+      margin-left: 10px;
+      flex: 1;
+    }
+  }
+  .details {
+  }
+}

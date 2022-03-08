@@ -1,14 +1,18 @@
 import { LogInCircle, MailSend } from "@styled-icons/boxicons-regular";
 import { Lock } from "@styled-icons/boxicons-solid";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useUserContext } from "../../../contexts/user-context";
-import { Api, useLoadAPI } from "../../../lib/api";
-import { validateEmail, validatePassword } from "../../../lib/models/user";
-import Button from "../../Form/Button";
-import InputText, { InputTextState } from "../../Form/InputText";
-import Loading from "../../Loading";
-import "./SignInOrSignUp.scss";
+import { Link, useNavigate } from "react-router-dom";
+import { useUserContext } from "../../../../contexts/UserContext";
+import { Api, useLoadAPI } from "../../../../lib/api";
+import { validateEmail, validatePassword } from "../../../../lib/models/user";
+import InsideContainer from "../../../Containers/InsideContainer/InsideContainer";
+import OutsideContainer from "../../../Containers/OutsideContainer/OutsideContainer";
+import ErrorMessage from "../../../Error/ErrorMessage/ErrorMessage";
+import Button from "../../../Form/Button/Button";
+import InputText, { InputTextState } from "../../../Form/InputText/InputText";
+import Loading from "../../../Loading/Loading";
+import Title from "../../../Texts/Title/Title";
+import "../SignInOrSignUp.scss";
 
 export const SignIn: React.FC = () => {
   const [formData, setFormData] = useState<InputTextState>({});
@@ -36,13 +40,17 @@ export const SignIn: React.FC = () => {
     }
   }, [data, setUser]);
 
-  // TODO: show error
   return (
     <div className="SignInOrSignUp">
-      <div className="container">
-        <h1 className="title">Sign In</h1>
-        <div className="container">
+      <OutsideContainer>
+        <Title>Sign In</Title>
+        <InsideContainer>
           <form onSubmit={onSubmit}>
+            {error && (
+              <div className="errorMessage">
+                <ErrorMessage message={error} />
+              </div>
+            )}
             <div className="input">
               <InputText
                 label="E-mail"
@@ -66,18 +74,12 @@ export const SignIn: React.FC = () => {
               <Button label="Sign me In" type="submit" icon={LogInCircle} />
             </div>
             <div className="link">
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
-              >
-                I want to sign up.
-              </button>
+              <Link to="/sign-up">I want to sign up.</Link>
             </div>
           </form>
           {loading && <Loading />}
-        </div>
-      </div>
+        </InsideContainer>
+      </OutsideContainer>
     </div>
   );
 };

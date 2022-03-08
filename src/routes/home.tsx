@@ -1,22 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Splash from "../components/Splash";
-import { useAutoLoadAPI, Api } from "../lib/api";
+import Splash from "../components/Splash/Splash";
+import { useUserContext } from "../contexts/UserContext";
+import { useAutoLoadAPI, Api, useLoadAPI } from "../lib/api";
 
 function HomeRoute() {
   const navigate = useNavigate();
-  const [loading, data, error] = useAutoLoadAPI(() => {
-    return Api.get("/users/session");
-  });
+  const { user, setUser } = useUserContext();
+  const [call, loading, data, error] = useLoadAPI(() =>
+    Api.get("/users/session")
+  );
 
   useEffect(() => {
-    if (data?.success) {
+    if (user) {
       navigate("/chats");
+    } else {
+      call();
     }
-    if (!data?.success || error) {
+  }, [user, call]);
+
+  useEffect(() => {
+    if (error) {
       navigate("sign-in");
     }
-  }, [data, error, navigate]);
+  }, [error, navigate]);
+
+  useEffect(() => {
+    if (data) {
+      const {user} = data;
+      if (user) {
+        setUser(user);
+      }
+    }
+
+  }, [data, setUser])
 
   return <Splash isLoading={loading} />;
 }

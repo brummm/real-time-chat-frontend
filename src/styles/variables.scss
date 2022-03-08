@@ -3,6 +3,7 @@ $pallete1: #95b810;
 $pallete2: #93827f;
 $pallete3: #2f2f2f;
 $pallete4: #f7f7f2;
+$headerHeight: 60px;
 
 $borderRadius: 6px;
 @mixin borderRadius {
@@ -34,4 +35,10 @@ $borderRadius: 6px;
       background: #e8347455;
     }
   }
+}
+
+@mixin sm {
+	@media (min-width: 480px) {
+			@content;
+	}
 }

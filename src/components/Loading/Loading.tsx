@@ -1,7 +1,7 @@
 import React from "react";
 import Spinner from "react-activity/dist/Spinner";
 import "react-activity/dist/Spinner.css";
-import Page from "../Page";
+import Page from "../Page/Page";
 import "./Loading.scss";
 
 export interface LoadingProps {

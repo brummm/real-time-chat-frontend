@@ -2,14 +2,16 @@
 
 .Chat {
   display: grid;
-  grid-template-rows: auto 60px;
+  grid-template-rows: calc(100vh - 60px - $headerHeight) 60px;
   &.mediumMessage {
-    grid-template-rows: auto 82px;
+    grid-template-rows: calc(100vh - 82px - $headerHeight) 82px;
   }
   &.largeMessage {
-    grid-template-rows: auto 104px;
+    grid-template-rows: calc(100vh - 104px - $headerHeight) 104px;
   }
   .messages {
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .sendMessage {
     background-color: red;

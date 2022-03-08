@@ -1,5 +1,5 @@
 export interface ChatMessage {
-	id: string;
+	_id: string;
 	message: string;
 	owner: string;
 	inResponseTo?: any;

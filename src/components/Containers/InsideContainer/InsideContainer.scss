@@ -1,0 +1,8 @@
+@import "../../../styles/variables.scss";
+
+.InsideContainer {
+  @include borderRadius;
+  @include shadow;
+  background-color: $pallete4;
+  padding: 50px 38px;
+}

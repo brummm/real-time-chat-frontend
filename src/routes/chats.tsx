@@ -1,5 +1,5 @@
-import ChatList from "../components/Chat/ChatList";
-import { Page } from "../components/Page";
+import ChatList from "../components/Chat/ChatList/ChatList";
+import { Page } from "../components/Page/Page";
 
 export default function ChatsRoute() {
   return (

@@ -1,11 +1,11 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Chat } from "../components/Chat";
-import ChatHeader from "../components/Chat/ChatHeader";
-import ErrorPage from "../components/Error/ErrorPage";
-import Header from "../components/Header";
-import { LoadingPage } from "../components/Loading";
-import Page from "../components/Page";
+import ChatHeader from "../components/Chat/ChatHeader/ChatHeader";
+import ChatListAndChat from "../components/Chat/ChatListAndChat/ChatListAndChat";
+import ErrorPage from "../components/Error/ErrorPage/ErrorPage";
+import Header from "../components/Header/Header";
+import { LoadingPage } from "../components/Loading/Loading";
+import Page from "../components/Page/Page";
 import { Api, useAutoLoadAPI } from "../lib/api";
 
 export const ChatRoute: React.FC = () => {
@@ -30,7 +30,7 @@ export const ChatRoute: React.FC = () => {
 
   return (
     <Page variation="top" header={_Header}>
-      <Chat chat={chat} />
+      <ChatListAndChat chat={chat} />
     </Page>
   );
 };

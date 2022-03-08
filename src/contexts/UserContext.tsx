@@ -8,18 +8,18 @@ interface IUserContext {
 const Context = createContext<IUserContext>({} as IUserContext);
 
 
-const LOCAL_STORAGE_kEY = 'UserData';
-const getUserFromLocalStorage = (): User | undefined => {
-  const data = window.localStorage.getItem(LOCAL_STORAGE_kEY);
+const SESSION_STORAGE_kEY = 'UserData';
+const getUserFromSessionStorage = (): User | undefined => {
+  const data = window.sessionStorage.getItem(SESSION_STORAGE_kEY);
   if (!data) return undefined;
   return JSON.parse(data) as User;
 };
 
 export const UserContext: React.FC = ({ children }) => {
-  const initialUser = getUserFromLocalStorage();
+  const initialUser = getUserFromSessionStorage();
   const [user, setUserState] = useState<User | undefined>(initialUser);
   const setUser = useCallback((user: User) => {
-    window.localStorage.setItem(LOCAL_STORAGE_kEY, JSON.stringify(user))
+    window.sessionStorage.setItem(SESSION_STORAGE_kEY, JSON.stringify(user))
     setUserState(user)
   }, [])
   return (

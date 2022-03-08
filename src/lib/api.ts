@@ -15,7 +15,7 @@ const credentials: RequestInit = {
 export const Api = {
   async get(uri: string): Promise<Response> {
     return fetch(`${API_URL}${uri}`, {
-      ...credentials
+      ...credentials,
     });
   },
   async post(uri: string, data: any): Promise<Response> {
@@ -89,49 +89,80 @@ export const fetchUser = async (
 
 export const useLoadAPI = (
   fetchFn: CallableFunction
-): [CallableFunction, boolean, any, boolean, Response | undefined] => {
+): [
+  CallableFunction,
+  boolean,
+  any,
+  string | undefined,
+  Response | undefined,
+  CallableFunction
+] => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState();
   const [data, setData] = useState<unknown | null>(null);
   const navigate = useNavigate();
   const unmounted = useRef(false);
 
-
-
   let response: Response | undefined = undefined;
-  const call = useCallback(async (...args) => {
-    if (!unmounted.current) {
-      setLoading(true);
-      setError(false);
-      setData(null);
-      try {
-        response = await fetchFn(...args);
-        if (!response?.ok) {
-          if (response?.status === 401) {
-            navigate("/sign-in");
-            return;
-          } else {
-            throw Error("Response not ok.");
+  const call = useCallback(
+    async (...args) => {
+      if (!unmounted.current) {
+        setLoading(true);
+        setError(undefined);
+        setData(null);
+        try {
+          response = await fetchFn(...args);
+
+          if (!response?.ok) {
+            if (response?.status === 401) {
+              navigate("/sign-in");
+              return;
+            } else {
+              let error = "Response not ok.";
+              const data = await response?.text();
+              if (data) {
+                const json = JSON.parse(data);
+                if (json.error !== undefined) {
+                  error = json.error;
+                }
+              }
+
+              throw Error(error);
+            }
           }
+          setData(await response.json());
+        } catch (e: any) {
+          console.error(e);
+          setError(e.message);
         }
-        setData(await response.json());
-      } catch (e: any) {
-        console.error(e);
-        setError(true);
+        setLoading(false);
       }
-      setLoading(false);
-    }
-    return () => {
-      unmounted.current = true;
-    };
-  }, [fetchFn]);
-  return [call, loading, data, error, response];
+      return () => {
+        unmounted.current = true;
+      };
+    },
+    [fetchFn]
+  );
+
+  const clearStates = useCallback(() => {
+    setLoading(false);
+    setError(undefined);
+    setData(null);
+  }, []);
+  return [call, loading, data, error, response, clearStates];
 };
 
 export const useAutoLoadAPI = (
   fetchFn: CallableFunction
-): [boolean, any, boolean, Response | undefined] => {
-  const [call, loading, data, error, response] = useLoadAPI(fetchFn);
+): [
+  boolean,
+  any,
+  string | undefined,
+  Response | undefined,
+  CallableFunction
+] => {
+  const [call, loading, data, error, response, clearStates] =
+    useLoadAPI(fetchFn);
   const unmounted = useRef(false);
   const autoCall = useCallback(() => {
     if (!unmounted.current) {
@@ -145,5 +176,5 @@ export const useAutoLoadAPI = (
       unmounted.current = true;
     };
   }, [autoCall]);
-  return [loading, data, error, response];
+  return [loading, data, error, response, clearStates];
 };

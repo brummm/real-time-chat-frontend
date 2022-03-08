@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useUserContext } from "../../../contexts/user-context";
+import { useUserContext } from "../../../contexts/UserContext";
 import { User } from "../../../lib/models/user";
-import UserAvatar from "../../User/UserAvatar";
+import UserAvatar from "../../User/UserAvatar/UserAvatar";
 import "./ChatHeader.scss";
 
 interface Props {

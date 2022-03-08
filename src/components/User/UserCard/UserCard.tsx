@@ -1,7 +1,7 @@
 
 import React from "react";
 import { User } from "../../../lib/models/user";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../UserAvatar/UserAvatar";
 import "./UserCard.scss";
 
 interface Props {

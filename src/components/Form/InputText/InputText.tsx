@@ -1,5 +1,5 @@
 import { StyledIcon } from "@styled-icons/styled-icon";
-import React, { useState } from "react";
+import React, { DetailedHTMLProps, InputHTMLAttributes, useState } from "react";
 import "./InputText.scss";
 
 export interface InputTextState {
@@ -8,12 +8,14 @@ export interface InputTextState {
     valid: boolean;
   };
 }
-interface Props {
+interface Props
+  extends DetailedHTMLProps<
+    InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  > {
   label: string;
-  name: string;
   icon?: StyledIcon;
-  type?: string;
-  validate(data: any): void;
+  validate?(data: any): void;
   state: [stateValue: any, setStateValue: CallableFunction];
 }
 export const InputText: React.FC<Props> = ({
@@ -31,6 +33,7 @@ export const InputText: React.FC<Props> = ({
   const [stateValue, setStateValue] = state;
 
   const _validate = (inputValue: string): void => {
+    if (!validate) return;
     try {
       validate(inputValue);
       setErrorMessage(null);
@@ -51,12 +54,14 @@ export const InputText: React.FC<Props> = ({
     }
     setValue(event.target.value);
 
-    let valid;
-    try {
-      validate(value);
-      valid = true;
-    } catch (e) {
-      valid = false;
+    let valid = true;
+    if (validate) {
+      try {
+        validate(value);
+        valid = true;
+      } catch (e) {
+        valid = false;
+      }
     }
     setStateValue({
       ...stateValue,

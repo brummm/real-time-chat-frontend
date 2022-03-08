@@ -74,7 +74,7 @@ export const SendMessageForm: React.FC<Props> = ({
 
   const handleChange = (e: FormEvent<HTMLParagraphElement>) => {
     const text = messageInputRef.current?.innerText || "";
-    // updateTextareaHeight(e.currentTarget);
+    updateTextareaHeight(e.currentTarget);
     setMessage(text);
   };
 

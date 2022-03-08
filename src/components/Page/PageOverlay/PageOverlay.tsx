@@ -5,8 +5,14 @@ import "./PageOverlay.scss";
 interface Props {
   hash: string;
   title?: string;
+  onClose?: CallableFunction;
 }
-export const PageOverlay: React.FC<Props> = ({ title, children, hash }) => {
+export const PageOverlay: React.FC<Props> = ({
+  title,
+  children,
+  hash,
+  onClose,
+}) => {
   const [visible, setVisible] = useState(false);
 
   const close = () => {
@@ -20,6 +26,9 @@ export const PageOverlay: React.FC<Props> = ({ title, children, hash }) => {
     const html = document.getElementsByTagName("html")[0];
     if (!_visible) {
       html.classList.remove("preventScroll");
+      if (onClose) {
+        onClose();
+      }
     } else {
       html.classList.add("preventScroll");
     }

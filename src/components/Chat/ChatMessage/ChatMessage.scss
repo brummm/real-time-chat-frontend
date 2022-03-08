@@ -1,0 +1,22 @@
+@import '../../../styles/variables.scss';
+
+.ChatMessage {
+  @include shadow;
+  @include borderRadius;
+  background-color: $pallete4;
+  margin-bottom: 8px;
+  max-width: 90%;
+  padding: 16px;
+
+  &.messageIsFromCurrentUser {
+    background-color: #EBFEA3;
+    align-self: flex-end;
+  }
+
+  .user {
+    color: $pallete2;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+}

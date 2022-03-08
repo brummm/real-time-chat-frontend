@@ -1,0 +1,12 @@
+@import "../../../styles/variables.scss";
+
+.NewChatButton {
+  @include shadow;
+  background-color: $pallete1;
+  color: $pallete4;
+  border-radius: 50%;
+  display: grid;
+  height: 74px;
+  place-items: center;
+  width: 74px;
+}

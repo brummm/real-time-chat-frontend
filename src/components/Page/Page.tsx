@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import DefaultHeader from "../Header";
+import DefaultHeader from "../Header/Header";
 import "./Page.scss";
 
 export interface PageProps {
