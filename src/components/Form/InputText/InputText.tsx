@@ -1,5 +1,6 @@
 import { StyledIcon } from "@styled-icons/styled-icon";
 import React, { DetailedHTMLProps, InputHTMLAttributes, useState } from "react";
+import variables from "../../../styles/variables.scss";
 import "./InputText.scss";
 
 export interface InputTextState {
@@ -84,7 +85,7 @@ export const InputText: React.FC<Props> = ({
     <div className={classNames.join(" ")}>
       {Icon && (
         <div className="icon">
-          <Icon width={18} fill="#2f2f2f" />
+          <Icon width={18} fill={variables.pallete3} />
         </div>
       )}
       <input

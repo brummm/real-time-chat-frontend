@@ -3,6 +3,7 @@ $pallete1: #95b810;
 $pallete2: #93827f;
 $pallete3: #2f2f2f;
 $pallete4: #f7f7f2;
+$palleteError: #CD2525;
 $headerHeight: 60px;
 
 $borderRadius: 6px;
@@ -41,4 +42,14 @@ $borderRadius: 6px;
 	@media (min-width: 480px) {
 			@content;
 	}
+}
+
+
+:export {
+	pallete0: $pallete0;
+	pallete1: $pallete1;
+	pallete2: $pallete2;
+	pallete3: $pallete3;
+	pallete4: $pallete4;
+  palleteError: $palleteError;
 }

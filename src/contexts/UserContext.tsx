@@ -4,11 +4,11 @@ import { User } from "../lib/models/user";
 interface IUserContext {
   user?: User;
   setUser: (user: User) => void;
+  logout: () => boolean
 }
 const Context = createContext<IUserContext>({} as IUserContext);
 
-
-const SESSION_STORAGE_kEY = 'UserData';
+const SESSION_STORAGE_kEY = "UserData";
 const getUserFromSessionStorage = (): User | undefined => {
   const data = window.sessionStorage.getItem(SESSION_STORAGE_kEY);
   if (!data) return undefined;
@@ -19,11 +19,14 @@ export const UserContext: React.FC = ({ children }) => {
   const initialUser = getUserFromSessionStorage();
   const [user, setUserState] = useState<User | undefined>(initialUser);
   const setUser = useCallback((user: User) => {
-    window.sessionStorage.setItem(SESSION_STORAGE_kEY, JSON.stringify(user))
-    setUserState(user)
-  }, [])
+    window.sessionStorage.setItem(SESSION_STORAGE_kEY, JSON.stringify(user));
+    setUserState(user);
+  }, []);
+  const logout = useCallback(() => {
+    return false;
+  }, [user])
   return (
-    <Context.Provider value={{ user, setUser }}>{children}</Context.Provider>
+    <Context.Provider value={{ user, setUser, logout }}>{children}</Context.Provider>
   );
 };
 

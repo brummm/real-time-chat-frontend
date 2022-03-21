@@ -1,7 +1,11 @@
+@import '../../../styles/variables.scss';
+
 .ChatList {
+  background-color: rgba($pallete4, .8);
+  padding: 16px;
   .list {
     .chat {
-      margin-bottom: 20px;
+      margin-bottom: 32px;
     }
   }
 

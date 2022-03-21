@@ -6,6 +6,7 @@ import React, {
 } from "react";
 import { Link, LinkProps } from "react-router-dom";
 import "./Button.scss";
+import variables from '../../../styles/variables.scss';
 
 interface ButtonProps
   extends DetailedHTMLProps<
@@ -22,7 +23,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
       <button {...props} type={type}>
         {Icon && (
           <span className="icon">
-            <Icon size={28} fill="#f7f7f2" />
+            <Icon size={28} fill={variables.pallete4} />
           </span>
         )}
         <span className="label">{label}</span>
@@ -45,7 +46,7 @@ export const ButtonAnchor: React.FC<ButtonAnchorProps> = (props) => {
       <a {...props}>
         {Icon && (
           <span className="icon">
-            <Icon size={28} fill="#f7f7f2" />
+            <Icon size={28} fill={variables.pallete4} />
           </span>
         )}
         <span className="label">{children}</span>
@@ -67,7 +68,7 @@ export const ButtonLink: React.FC<ButtonLinkProps> = (props) => {
       <Link {...otherProps}>
         {Icon && (
           <span className="icon">
-            <Icon size={28} fill="#f7f7f2" />
+            <Icon size={28} fill={variables.pallete4} />
           </span>
         )}
         <span className="label">{children}</span>

@@ -7,12 +7,13 @@ html.preventScroll {
 }
 
 .PageOverlay {
-  align-items: center;
-  display: flex;
+  display: grid;
   height: 100vh;
-  justify-content: center;
-  width: 100vw;
+  left: 0;
+  place-items: center;
   position: absolute;
+  top: 0;
+  width: 100vw;
   z-index: 10;
 
   .overlay {

@@ -1,0 +1,24 @@
+@import '../../../styles/variables.scss';
+
+.ChatCard {
+  a {
+    align-items: flex-end;
+    display: flex;
+    text-decoration: none;
+    figure {
+      @include borderRadius;
+      background-color: $pallete1;
+      height: 50px;
+      margin-right: 10px;
+      width: 50px;
+    }
+    p.data {
+      font-size: 14px;
+      span.name {
+        color: $pallete2;
+        font-size: 12px;
+        font-weight: bold;
+      }
+    }
+  }
+}

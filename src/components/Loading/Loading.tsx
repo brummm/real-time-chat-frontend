@@ -1,6 +1,7 @@
 import React from "react";
 import Spinner from "react-activity/dist/Spinner";
 import "react-activity/dist/Spinner.css";
+import variables from '../../styles/variables.scss';
 import Page from "../Page/Page";
 import "./Loading.scss";
 
@@ -22,7 +23,7 @@ export const Loading: React.FC<LoadingProps> = ({
   return (
     <>
       <Spinner
-        color="#2F2F2F"
+        color={variables.pallete3}
         size={resolvedSize}
         speed={speed}
         animating={true}

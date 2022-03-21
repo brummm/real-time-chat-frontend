@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useUserContext } from "../../../contexts/UserContext";
 import { User } from "../../../lib/models/user";
+import variables from '../../../styles/variables.scss';
 import UserAvatar from "../../User/UserAvatar/UserAvatar";
 import "./ChatHeader.scss";
 
@@ -27,7 +28,7 @@ export const ChatHeader: React.FC<Props> = ({ users }) => {
           <rect width="16" height="26" />
           <path
             d="M12.8229 0L0 13L12.8229 26L16 22.779L6.35416 13L16 3.22096L12.8229 0Z"
-            fill="#F7F7F2"
+            fill={variables.pallete4}
           />
         </svg>
       </Link>

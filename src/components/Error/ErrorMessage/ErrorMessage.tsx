@@ -1,6 +1,7 @@
 import { Error } from "@styled-icons/boxicons-solid";
 import React from "react";
 import "./ErrorMessage.scss";
+import variables from '../../../styles/variables.scss';
 
 interface Props {
   message: string;
@@ -11,7 +12,7 @@ export const ErrorMessage: React.FC<Props> = ({ message, details }) => {
     <div className="ErrorMessage">
       <div className="message">
         <figure>
-          <Error size={24} fill="#CD2525" />
+          <Error size={24} fill={variables.palleteError} />
         </figure>
         <span>{message}</span>
       </div>

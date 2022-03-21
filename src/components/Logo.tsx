@@ -1,4 +1,5 @@
 import React from "react";
+import variables from '../styles/variables.scss';
 
 interface Props {
   width?: number;
@@ -7,7 +8,7 @@ interface Props {
 }
 export const Logo: React.FC<Props> = ({
   width = 319,
-  backgroundColor = "#6E4597",
+  backgroundColor = variables.pallete0,
   foregroundColor = "white",
 }) => {
   const finalWidth = width;

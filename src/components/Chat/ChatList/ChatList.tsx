@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../../contexts/UserContext";
 import { Api, useAutoLoadAPI, useLoadAPI } from "../../../lib/api";
 import { Chat } from "../../../lib/models/chat";
@@ -10,6 +10,7 @@ import { Loading } from "../../Loading/Loading";
 import NoData from "../../NoData/NoData";
 import PageOverlay from "../../Page/PageOverlay/PageOverlay";
 import FindUser from "../../User/FindUser/FindUser";
+import ChatCard from "../ChatCard/ChatCard";
 import NewChatButton from "../NewChatButton/NewChatButton";
 import "./ChatList.scss";
 
@@ -82,15 +83,7 @@ export const ChatList: React.FC = () => {
       <ul className="list">
         {chats.map((chat: Chat) => (
           <li key={chat._id} className="chat">
-            <Link to={`/chats/${chat._id}`}>
-              {/* @ts-ignore */}
-              {user.id}
-              {chat.users
-                .filter((userInChat) => userInChat._id !== user?._id)
-                .map((user, index) => (
-                  <p key={index}>@{user.userName}</p>
-                ))}
-            </Link>
+            <ChatCard chat={chat} />
           </li>
         ))}
       </ul>

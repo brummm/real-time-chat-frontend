@@ -22,37 +22,5 @@
       margin-left: 16px;
       padding: 0;
     }
-
-    nav {
-      button {
-        background: none;
-        padding: 0 5px;
-      }
-
-      div {
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        height: 100vh;
-      }
-      ul {
-        background-color: $pallete0;
-        bottom: 0;
-        opacity: 0;
-        position: fixed;
-        right: 0;
-        top: $headerHeight;
-        width: 70%;
-        transform: translateX(100vh);
-        transition: all ease-out 0.25s;
-        z-index: 100;
-        &.opened {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
-    }
   }
 }
