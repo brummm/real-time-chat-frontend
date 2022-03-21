@@ -13,7 +13,7 @@ export const App: React.FC = () => {
   const [user, setUser] = useState<User | undefined>();
   return (
     <UserContext>
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Routes>
           <Route path="/" element={<HomeRoute />} />
           <Route path="/sign-in" element={<SignInRoute />} />
