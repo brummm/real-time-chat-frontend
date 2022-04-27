@@ -1,14 +1,11 @@
 import { io, Socket } from "socket.io-client";
-import constants from "../../lib/constants";
 import { ChatMessage } from "../models/chat-message";
-const { API_URL } = constants;
-
 export class ChatSocket {
   private socket: Socket;
   onNewMessage: (message: ChatMessage) => void = () => {};
 
   constructor() {
-    this.socket = io(`${API_URL}/chat`, {
+    this.socket = io(`${process.env.REACT_APP_API_URL}/chat`, {
       withCredentials: true,
       secure: true,
     });

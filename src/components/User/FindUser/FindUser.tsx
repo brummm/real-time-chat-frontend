@@ -2,7 +2,8 @@ import { Search } from "@styled-icons/boxicons-regular";
 import { User as UserIcon } from "@styled-icons/boxicons-regular/User";
 import React, { useCallback, useState } from "react";
 import { useUserContext } from "../../../contexts/UserContext";
-import { fetchUserAPI, useLoadAPI } from "../../../lib/api";
+import { useLoadAPI } from "../../../lib/api";
+import axios from "../../../lib/axios";
 import { User, validateUsername } from "../../../lib/models/user";
 import ErrorMessage from "../../Error/ErrorMessage/ErrorMessage";
 import Button from "../../Form/Button/Button";
@@ -18,7 +19,7 @@ export const FindUser: React.FC<{
   const { user } = useUserContext();
   const [formData, setFormData] = useState<InputTextState>({});
   const [call, loading, data, error] = useLoadAPI(() => {
-    return fetchUserAPI(formData.username.value);
+    return axios.get(`/users/profile/${formData.username.value}`);
   });
 
   const onSubmit = useCallback(
@@ -26,7 +27,7 @@ export const FindUser: React.FC<{
       event.preventDefault();
       if (formData.username.valid) call();
     },
-    [formData]
+    [call, formData.username.valid]
   );
 
   const onFoundUserClick = useCallback(
@@ -45,7 +46,7 @@ export const FindUser: React.FC<{
         throw Error("Do you want to chat with yourself?");
       }
     },
-    [excludeCurrentUser]
+    [excludeCurrentUser, user?.userName]
   );
 
   return (

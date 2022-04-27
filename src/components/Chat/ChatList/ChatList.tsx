@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../../contexts/UserContext";
-import { Api, useAutoLoadAPI, useLoadAPI } from "../../../lib/api";
+import { useAutoLoadAPI, useLoadAPI } from "../../../lib/api";
+import axios from "../../../lib/axios";
 import { Chat } from "../../../lib/models/chat";
 import { User } from "../../../lib/models/user";
 import ErrorMessage from "../../Error/ErrorMessage/ErrorMessage";
@@ -21,7 +22,7 @@ export const ChatList: React.FC = () => {
 
   const navigate = useNavigate();
   const [loading, data, error] = useAutoLoadAPI(() => {
-    return Api.get("/chats");
+    return axios.get("/chats");
   });
 
   let [
@@ -31,7 +32,7 @@ export const ChatList: React.FC = () => {
     errorCreateChat,
     _,
     clearCreateChatStates,
-  ] = useLoadAPI((userIds: string[]) => Api.post("/chats", { userIds }));
+  ] = useLoadAPI((userIds: string[]) => axios.post("/chats", { userIds }));
 
   const selectUserCallback = useCallback(
     (user: User) => {
@@ -49,7 +50,7 @@ export const ChatList: React.FC = () => {
       const { id } = dataCreateChat;
       navigate(`/chats/${id}`);
     }
-  }, [dataCreateChat]);
+  }, [dataCreateChat, navigate]);
 
   if (loading) return <Loading size="medium" />;
   if (error) return <ErrorMessage message={error} />;

@@ -6,12 +6,13 @@ import ErrorPage from "../components/Error/ErrorPage/ErrorPage";
 import Header from "../components/Header/Header";
 import { LoadingPage } from "../components/Loading/Loading";
 import Page from "../components/Page/Page";
-import { Api, useAutoLoadAPI } from "../lib/api";
+import { useAutoLoadAPI } from "../lib/api";
+import axios from "../lib/axios";
 
 export const ChatRoute: React.FC = () => {
   const { chatId } = useParams();
   const [loading, data, error] = useAutoLoadAPI(() =>
-    Api.get(`/chats/${chatId}`)
+    axios.get(`/chats/${chatId}`)
   );
 
   if (loading) return <LoadingPage />;

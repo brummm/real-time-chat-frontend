@@ -3,7 +3,8 @@ import { Lock } from "@styled-icons/boxicons-solid";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../../../../contexts/UserContext";
-import { Api, useLoadAPI } from "../../../../lib/api";
+import { useLoadAPI } from "../../../../lib/api";
+import axios from "../../../../lib/axios";
 import { validateEmail, validatePassword } from "../../../../lib/models/user";
 import InsideContainer from "../../../Containers/InsideContainer/InsideContainer";
 import OutsideContainer from "../../../Containers/OutsideContainer/OutsideContainer";
@@ -19,7 +20,7 @@ export const SignIn: React.FC = () => {
   const navigate = useNavigate();
   const { setUser } = useUserContext();
   const [signIn, loading, data, error] = useLoadAPI((params: any) =>
-    Api.post("/users/login", params)
+    axios.post("/users/login", params)
   );
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -38,7 +39,7 @@ export const SignIn: React.FC = () => {
       setUser(data.user);
       navigate("/chats");
     }
-  }, [data, setUser]);
+  }, [data, navigate, setUser]);
 
   return (
     <div className="SignInOrSignUp">

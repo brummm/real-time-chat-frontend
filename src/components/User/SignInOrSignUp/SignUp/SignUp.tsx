@@ -1,12 +1,13 @@
 import { WinkSmile } from "@styled-icons/boxicons-solid";
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useUserContext } from "../../../../contexts/UserContext";
-import { Api, useLoadAPI } from "../../../../lib/api";
+import { useLoadAPI } from "../../../../lib/api";
+import axios from "../../../../lib/axios";
 import InsideContainer from "../../../Containers/InsideContainer/InsideContainer";
 import OutsideContainer from "../../../Containers/OutsideContainer/OutsideContainer";
 import ErrorMessage from "../../../Error/ErrorMessage/ErrorMessage";
-import Button, { ButtonLink } from "../../../Form/Button/Button";
+import { ButtonLink } from "../../../Form/Button/Button";
 import Loading from "../../../Loading/Loading";
 import Title from "../../../Texts/Title/Title";
 import "../SignInOrSignUp.scss";
@@ -14,10 +15,9 @@ import "./SignUp.scss";
 import SignUpForm from "./SignUpForm/SignUpForm";
 
 export const SignUp: React.FC = () => {
-  const navigate = useNavigate();
   const { user, setUser } = useUserContext();
   const [signUp, loading, data, error] = useLoadAPI((params: any) =>
-    Api.post("/users/register", params)
+    axios.post("/users/register", params)
   );
 
   useEffect(() => {

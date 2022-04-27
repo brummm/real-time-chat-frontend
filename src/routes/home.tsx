@@ -1,14 +1,15 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Splash from "../components/Splash/Splash";
 import { useUserContext } from "../contexts/UserContext";
-import { useAutoLoadAPI, Api, useLoadAPI } from "../lib/api";
+import { useLoadAPI } from "../lib/api";
+import axios from "../lib/axios";
 
 function HomeRoute() {
   const navigate = useNavigate();
   const { user, setUser } = useUserContext();
   const [call, loading, data, error] = useLoadAPI(() =>
-    Api.get("/users/session")
+    axios.get("/users/session")
   );
 
   useEffect(() => {
@@ -17,7 +18,7 @@ function HomeRoute() {
     } else {
       call();
     }
-  }, [user, call]);
+  }, [user, call, navigate]);
 
   useEffect(() => {
     if (error) {
@@ -27,13 +28,12 @@ function HomeRoute() {
 
   useEffect(() => {
     if (data) {
-      const {user} = data;
+      const { user } = data;
       if (user) {
         setUser(user);
       }
     }
-
-  }, [data, setUser])
+  }, [data, setUser]);
 
   return <Splash isLoading={loading} />;
 }
