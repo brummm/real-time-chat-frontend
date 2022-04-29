@@ -18,7 +18,7 @@ export const FindUser: React.FC<{
 }> = ({ selectUserCallback, excludeCurrentUser = true }) => {
   const { user } = useUserContext();
   const [formData, setFormData] = useState<InputTextState>({});
-  const [call, loading, data, error] = useLoadAPI(() => {
+  const { call, loading, data, error } = useLoadAPI(() => {
     return axios.get(`/users/profile/${formData.username.value}`);
   });
 

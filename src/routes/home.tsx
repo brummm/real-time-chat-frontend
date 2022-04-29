@@ -8,7 +8,7 @@ import axios from "../lib/axios";
 function HomeRoute() {
   const navigate = useNavigate();
   const { user, setUser } = useUserContext();
-  const [call, loading, data, error] = useLoadAPI(() =>
+  const { call, loading, data, error } = useLoadAPI(() =>
     axios.get("/users/session")
   );
 

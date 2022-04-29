@@ -11,7 +11,7 @@ import axios from "../lib/axios";
 
 export const ChatRoute: React.FC = () => {
   const { chatId } = useParams();
-  const [loading, data, error] = useAutoLoadAPI(() =>
+  const { loading, data, error } = useAutoLoadAPI(() =>
     axios.get(`/chats/${chatId}`)
   );
 

@@ -16,9 +16,12 @@ import SignUpForm from "./SignUpForm/SignUpForm";
 
 export const SignUp: React.FC = () => {
   const { user, setUser } = useUserContext();
-  const [signUp, loading, data, error] = useLoadAPI((params: any) =>
-    axios.post("/users/register", params)
-  );
+  const {
+    call: signUp,
+    loading,
+    data,
+    error,
+  } = useLoadAPI((params: any) => axios.post("/users/register", params));
 
   useEffect(() => {
     if (data && data.user) {

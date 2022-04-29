@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserContext } from "../../../contexts/UserContext";
 import { useAutoLoadAPI, useLoadAPI } from "../../../lib/api";
 import axios from "../../../lib/axios";
 import { Chat } from "../../../lib/models/chat";
@@ -18,21 +17,18 @@ import "./ChatList.scss";
 const NEW_CHAT_ANCHOR = "#new-chat";
 
 export const ChatList: React.FC = () => {
-  const { user } = useUserContext();
-
   const navigate = useNavigate();
-  const [loading, data, error] = useAutoLoadAPI(() => {
+  const { loading, data, error } = useAutoLoadAPI(() => {
     return axios.get("/chats");
   });
 
-  let [
-    createChat,
-    loadingCreateChat,
-    dataCreateChat,
-    errorCreateChat,
-    _,
-    clearCreateChatStates,
-  ] = useLoadAPI((userIds: string[]) => axios.post("/chats", { userIds }));
+  let {
+    call: createChat,
+    loading: loadingCreateChat,
+    data: dataCreateChat,
+    error: errorCreateChat,
+    clearStates: clearCreateChatStates,
+  } = useLoadAPI((userIds: string[]) => axios.post("/chats", { userIds }));
 
   const selectUserCallback = useCallback(
     (user: User) => {

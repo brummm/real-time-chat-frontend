@@ -32,16 +32,17 @@ export const signIn = async (
   }
 };
 
-export const useLoadAPI = (
-  fetchFn: CallableFunction
-): [
-  CallableFunction,
-  boolean,
-  any,
-  string | undefined,
-  AxiosResponse | undefined,
-  CallableFunction
-] => {
+interface AutoLoad {
+  loading: boolean;
+  data: any;
+  error: string | undefined;
+  response: AxiosResponse | undefined;
+  clearStates: CallableFunction;
+}
+interface Load extends AutoLoad {
+  call: CallableFunction;
+}
+export const useLoadAPI = (fetchFn: CallableFunction): Load => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState();
   const [data, setData] = useState<unknown | null>(null);
@@ -82,19 +83,18 @@ export const useLoadAPI = (
     setError(undefined);
     setData(null);
   }, []);
-  return [call, loading, data, error, response.current, clearStates];
+  return {
+    call,
+    loading,
+    data,
+    error,
+    response: response.current,
+    clearStates,
+  };
 };
 
-export const useAutoLoadAPI = (
-  fetchFn: CallableFunction
-): [
-  boolean,
-  any,
-  string | undefined,
-  AxiosResponse | undefined,
-  CallableFunction
-] => {
-  const [call, loading, data, error, response, clearStates] =
+export const useAutoLoadAPI = (fetchFn: CallableFunction): AutoLoad => {
+  const { call, loading, data, error, response, clearStates } =
     useLoadAPI(fetchFn);
   const unmounted = useRef(false);
   const autoCall = useCallback(() => {
@@ -109,5 +109,5 @@ export const useAutoLoadAPI = (
       unmounted.current = true;
     };
   }, [autoCall]);
-  return [loading, data, error, response, clearStates];
+  return { loading, data, error, response, clearStates };
 };

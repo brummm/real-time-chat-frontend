@@ -19,9 +19,12 @@ export const SignIn: React.FC = () => {
   const [formData, setFormData] = useState<InputTextState>({});
   const navigate = useNavigate();
   const { setUser } = useUserContext();
-  const [signIn, loading, data, error] = useLoadAPI((params: any) =>
-    axios.post("/users/login", params)
-  );
+  const {
+    call: signIn,
+    loading,
+    data,
+    error,
+  } = useLoadAPI((params: any) => axios.post("/users/login", params));
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
