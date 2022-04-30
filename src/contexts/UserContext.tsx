@@ -1,10 +1,14 @@
 import React, { createContext, useCallback, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useLoadAPI } from "../lib/api";
+import axios from "../lib/axios";
 import { User } from "../lib/models/user";
 
 interface IUserContext {
   user?: User;
-  setUser: (user: User) => void;
-  logout: () => boolean
+  setUser: (user: User | undefined) => void;
+  logout: () => Promise<boolean>;
+  logoutLoading: boolean;
 }
 const Context = createContext<IUserContext>({} as IUserContext);
 
@@ -16,17 +20,34 @@ const getUserFromSessionStorage = (): User | undefined => {
 };
 
 export const UserContext: React.FC = ({ children }) => {
+  const navigate = useNavigate();
   const initialUser = getUserFromSessionStorage();
   const [user, setUserState] = useState<User | undefined>(initialUser);
-  const setUser = useCallback((user: User) => {
-    window.sessionStorage.setItem(SESSION_STORAGE_kEY, JSON.stringify(user));
+  const setUser = useCallback((user: User | undefined) => {
+    if (user !== undefined) {
+      window.sessionStorage.setItem(SESSION_STORAGE_kEY, JSON.stringify(user));
+    } else {
+      window.sessionStorage.removeItem(SESSION_STORAGE_kEY);
+    }
     setUserState(user);
   }, []);
-  const logout = useCallback(() => {
-    return false;
-  }, [user])
+  const { call: callLogout, loading: logoutLoading } = useLoadAPI(() =>
+    axios.post(`/users/logout`)
+  );
+  const logout = useCallback(async () => {
+    try {
+      await callLogout();
+      setUser(undefined);
+      navigate("/");
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }, [callLogout, navigate, setUser]);
   return (
-    <Context.Provider value={{ user, setUser, logout }}>{children}</Context.Provider>
+    <Context.Provider value={{ user, setUser, logout, logoutLoading }}>
+      {children}
+    </Context.Provider>
   );
 };
 

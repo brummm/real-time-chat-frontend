@@ -24,7 +24,7 @@ export const ChatCard: React.FC<{ chat: Chat }> = ({ chat }) => {
                 @{user.userName}
               </span>
             ))}
-          {message && <p className="lastMessage">{message}</p>}
+          {message && <span className="lastMessage">{message}</span>}
         </p>
       </Link>
     </div>

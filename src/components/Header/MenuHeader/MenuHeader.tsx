@@ -4,12 +4,14 @@ import {
   LogOutCircle,
 } from "@styled-icons/boxicons-regular";
 import React, { useState } from "react";
+import { useUserContext } from "../../../contexts/UserContext";
 import variables from "../../../styles/variables.scss";
 import Credits from "../../Credits/Credits";
 import PageOverlay from "../../Page/PageOverlay/PageOverlay";
 import "./MenuHeader.scss";
 
 export const MenuHeader: React.FC = () => {
+  const { logout } = useUserContext();
   const [opened, setOpened] = useState(false);
   const [showCredits, setShowCredits] = useState(false);
   const openMenu = () => {
@@ -42,14 +44,14 @@ export const MenuHeader: React.FC = () => {
         )}
         <ul className={opened ? "opened" : ""}>
           <li>
-            <a
+            <button
               onClick={() => {
-                console.log("teste");
+                logout();
               }}
             >
               <LogOutCircle size={26} fill={variables.pallete4} />
               Logout
-            </a>
+            </button>
           </li>
           <li>
             <a

@@ -1,30 +1,23 @@
-import React, { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 import { marked } from "marked";
+import React from "react";
+import { useAutoLoadAPI } from "../../lib/api";
+import Loading from "../Loading/Loading";
 import "./Credits.scss";
 
 const Credits: React.FC = () => {
-  const [readmeText, setReadmeText] = useState("");
-  const getReadmeFromGithub = useCallback(async () => {
-    const readme = await fetch(
-      "https://raw.githubusercontent.com/brummm/brummm/main/README.md"
-    );
-    try {
-      const text = await readme.text();
-      setReadmeText(marked(text));
-    } catch (e) {
-      return null;
-    }
-  }, []);
-  useEffect(() => {
-    getReadmeFromGithub();
-  });
-  //
+  const { loading, data, error } = useAutoLoadAPI(() =>
+    axios.get("https://raw.githubusercontent.com/brummm/brummm/main/README.md")
+  );
+
   return (
     <div className="Credits">
-      {readmeText && (
+      {loading && <Loading />}
+      {error && <p>There was an error while trying to load the data.</p>}
+      {data && (
         <div
           className="text"
-          dangerouslySetInnerHTML={{ __html: readmeText }}
+          dangerouslySetInnerHTML={{ __html: marked(data) }}
         />
       )}
     </div>
