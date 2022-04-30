@@ -16,68 +16,24 @@ interface Props
   > {
   label: string;
   icon?: StyledIcon;
-  validate?(data: any): void;
-  state: [stateValue: any, setStateValue: CallableFunction];
+  error?: string;
 }
-export const InputText: React.FC<Props> = ({
-  label,
-  name,
-  icon: Icon,
-  type = "text",
-  validate,
-  state,
-}) => {
+export const InputText: React.FC<Props> = (props) => {
+  const {
+    label,
+    icon: Icon,
+    type = "text",
+    error,
+    name,
+    ...inputProps
+  } = props;
   const classNames = ["InputText"];
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [gotBlurry, setGotBlurry] = useState(false);
-  const [value, setValue] = useState("");
-  const [stateValue, setStateValue] = state;
-
-  const _validate = (inputValue: string): void => {
-    if (!validate) return;
-    try {
-      validate(inputValue);
-      setErrorMessage(null);
-    } catch (e: any) {
-      setErrorMessage(e.message);
-    }
-  };
-
-  const onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    _validate(event.currentTarget.value);
-    setGotBlurry(true);
-  };
-
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    if (gotBlurry) {
-      _validate(event.target.value);
-    }
-    setValue(event.target.value);
-
-    let valid = true;
-    if (validate) {
-      try {
-        validate(value);
-        valid = true;
-      } catch (e) {
-        valid = false;
-      }
-    }
-    setStateValue({
-      ...stateValue,
-      [event.target.name]: {
-        value,
-        valid,
-      },
-    });
-  };
 
   if (Icon) {
     classNames.push("hasIcon");
   }
 
-  if (errorMessage) {
+  if (error !== undefined) {
     classNames.push("hasError");
   }
 
@@ -91,15 +47,12 @@ export const InputText: React.FC<Props> = ({
       <input
         type={type}
         name={name}
-        onChange={onChange}
-        onBlur={onBlur}
         id={`input_${name}`}
         placeholder={label}
-        value={value}
-        required
+        {...inputProps}
       />
       <label htmlFor={`input_${name}`}>{label}</label>
-      {errorMessage && <p className="error">{errorMessage}</p>}
+      {error && <p className="error">{error}</p>}
     </div>
   );
 };

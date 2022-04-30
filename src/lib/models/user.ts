@@ -1,41 +1,26 @@
-import { validateLength } from "../validations";
+import * as yup from "yup";
 
-export const EMAIL_VALIDATIONS = {
-  length: {
-    min: 6,
-  },
-};
-export const validateEmail = (input: string) => {
-  if (
-    input.match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    )
-  ) {
-    return true;
-  } else {
-    throw Error(`Your e-mail does not seem valid.`);
-  }
-};
-
-export const USERNAME_VALIDATIONS = {
-  length: {
-    min: 6,
-    max: 12,
-  },
-};
-export const validateUsername = (input: string) => {
-  validateLength(input, USERNAME_VALIDATIONS.length, "Username");
-};
-
-export const PASSWORD_VALIDATIONS = {
-  length: {
-    min: 6,
-    max: 35,
-  },
-};
-export const validatePassword = (input: string) => {
-  validateLength(input, PASSWORD_VALIDATIONS.length, "Password");
-};
+export const validations = yup.object({
+  email: yup.string().required().email().label("E-mail"),
+  userName: yup
+    .string()
+    .required()
+    .min(6, "Must be, at least, 6 letters.")
+    .max(12),
+  password: yup
+    .string()
+    .required()
+    .min(6, "Must be, at least, 6 letters.")
+    .max(35)
+    .label("Password"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords don't match")
+    .required("Confirm Password is required"),
+  firstName: yup.string().required().label("First Name"),
+  lastName: yup.string().required().label("Last Name"),
+  birth: yup.date().max(new Date()).required().label("Birth Date"),
+});
 
 export interface User {
   _id: string;
@@ -43,6 +28,6 @@ export interface User {
   lastName: string;
   userName: string;
   email: string;
-  level: string;
+  role: string;
   birth: string;
 }

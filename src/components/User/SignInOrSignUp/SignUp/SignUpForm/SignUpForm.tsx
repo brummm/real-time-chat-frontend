@@ -5,43 +5,35 @@ import {
 } from "@styled-icons/boxicons-regular";
 import { Lock, User } from "@styled-icons/boxicons-solid";
 import { Formik } from "formik";
-import React, { useCallback, useState } from "react";
-import {
-  validateEmail,
-  validatePassword,
-  validateUsername,
-} from "../../../../../lib/models/user";
+import React, { useCallback } from "react";
+import { validations } from "../../../../../lib/models/user";
 import Button from "../../../../Form/Button/Button";
-import InputText, {
-  InputTextState,
-} from "../../../../Form/InputText/InputText";
+import InputText from "../../../../Form/InputText/InputText";
 
 interface Props {
   afterSubmit: CallableFunction;
 }
 export const SignUpForm: React.FC<Props> = ({ afterSubmit }) => {
-  const [formData, setFormData] = useState<InputTextState>({});
-
-  const onSubmit = useCallback(() => {
-    const params: any = {};
-    for (let field in formData) {
-      params[field] = formData[field].value;
-    }
-
-    afterSubmit({ user: params });
-  }, [afterSubmit, formData]);
+  const onSubmit = useCallback(
+    (values) => {
+      afterSubmit({ user: values });
+    },
+    [afterSubmit]
+  );
 
   return (
     <Formik
       onSubmit={onSubmit}
       initialValues={{
-        username: "",
+        userName: "",
         email: "",
         password: "",
-        firstname: "",
-        lastname: "",
+        confirmPassword: "",
+        firstName: "",
+        lastName: "",
         birth: "",
       }}
+      validationSchema={validations}
     >
       {({
         errors,
@@ -52,37 +44,56 @@ export const SignUpForm: React.FC<Props> = ({ afterSubmit }) => {
         touched,
         values,
       }) => (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="emailAndPassword">
             <div className="input">
               <InputText
                 label="Username"
-                validate={validateUsername}
                 name="userName"
+                onChange={handleChange}
+                onBlur={handleBlur}
                 required
                 icon={User}
-                state={[formData, setFormData]}
+                value={values.userName}
+                error={touched.userName ? errors.userName : ""}
               />
             </div>
             <div className="input">
               <InputText
                 label="E-mail"
-                validate={validateEmail}
                 name="email"
+                onChange={handleChange}
+                onBlur={handleBlur}
                 required
                 icon={MailSend}
-                state={[formData, setFormData]}
+                value={values.email}
+                error={errors.email}
               />
             </div>
             <div className="input">
               <InputText
                 label="Password"
                 name="password"
+                onChange={handleChange}
+                onBlur={handleBlur}
                 icon={Lock}
                 type="password"
                 required
-                validate={validatePassword}
-                state={[formData, setFormData]}
+                value={values.password}
+                error={errors.password}
+              />
+            </div>
+            <div className="input">
+              <InputText
+                label="Confirm Password"
+                name="confirmPassword"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                icon={Lock}
+                type="password"
+                required
+                value={values.confirmPassword}
+                error={errors.confirmPassword}
               />
             </div>
           </div>
@@ -91,18 +102,24 @@ export const SignUpForm: React.FC<Props> = ({ afterSubmit }) => {
             <InputText
               label="First Name"
               name="firstName"
+              onChange={handleChange}
+              onBlur={handleBlur}
               required
               icon={UserRegular}
-              state={[formData, setFormData]}
+              value={values.firstName}
+              error={errors.firstName}
             />
           </div>
           <div className="input">
             <InputText
               label="Last Name"
               name="lastName"
+              onChange={handleChange}
+              onBlur={handleBlur}
               required
               icon={UserRegular}
-              state={[formData, setFormData]}
+              value={values.lastName}
+              error={errors.lastName}
             />
           </div>
 
@@ -111,8 +128,11 @@ export const SignUpForm: React.FC<Props> = ({ afterSubmit }) => {
               type="date"
               label="Birth Date"
               name="birth"
+              onChange={handleChange}
+              onBlur={handleBlur}
               required
-              state={[formData, setFormData]}
+              value={values.birth}
+              error={errors.birth}
             />
           </div>
           <div className="button">
