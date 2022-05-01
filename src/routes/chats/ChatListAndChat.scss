@@ -1,0 +1,30 @@
+@import "../../styles/variables.scss";
+
+.ChatListAndChat {
+  .ChatList {
+    display: none; 
+  }
+  
+  @include sm {
+    display: flex;
+    justify-content: flex-end;
+    .ChatList {
+      display: initial; 
+    }
+    .Chat {
+      align-self: flex-end;
+      flex: 1;
+    }
+  }
+
+  &.noChat {
+    .ChatList {
+      display: flex;
+      flex: 1;
+    }
+    // .chat {
+    //   display: none;
+    //   flex: auto;
+    // }
+  }
+}

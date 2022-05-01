@@ -1,19 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useUserContext } from "../../../contexts/UserContext";
+import { Chat } from "../../../lib/models/chat";
 import { User } from "../../../lib/models/user";
-import variables from '../../../styles/variables.scss';
+import variables from "../../../styles/variables.scss";
 import UserAvatar from "../../User/UserAvatar/UserAvatar";
 import "./ChatHeader.scss";
 
-interface Props {
-  users: User[];
-}
-export const ChatHeader: React.FC<Props> = ({ users }) => {
-  const { user } = useUserContext();
-  const usersExceptCurrent = users.filter((_user) => _user._id !== user?._id);
+export const ChatHeader: React.FC<{ chat?: Chat }> = ({ chat }) => {
+  const { user: currentUser } = useUserContext();
+  const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    if (chat) {
+      const usersExceptCurrent = chat.users.filter(
+        (_user) => _user._id !== currentUser?._id
+      );
+      setUser(usersExceptCurrent[0]);
+    } else {
+      setUser(undefined);
+    }
+  }, [chat, currentUser?._id]);
+  // const usersExceptCurrent = users.filter((_user) => _user._id !== user?._id);
   // TODO: format for multiple users
-  const { userName } = usersExceptCurrent[0];
+  // const { userName } = usersExceptCurrent[0];
+
+  if (!chat && !user) {
+    return null;
+  }
 
   return (
     <div className="ChatHeader">
@@ -32,8 +46,8 @@ export const ChatHeader: React.FC<Props> = ({ users }) => {
           />
         </svg>
       </Link>
-      <UserAvatar user={users[0]} />
-      <h1>@{userName}</h1>
+      <UserAvatar user={user!} />
+      <h1>@{user?.userName}</h1>
     </div>
   );
 };

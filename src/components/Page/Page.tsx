@@ -9,9 +9,9 @@ export interface PageProps {
 export const Page: React.FC<PageProps> = ({
   children,
   variation = "middle",
-  header = <DefaultHeader />,
+  header,
 }) => {
-  const Header = header;
+  const Header = header || <DefaultHeader />;
 
   return (
     <div className="page">

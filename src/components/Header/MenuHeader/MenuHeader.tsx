@@ -11,7 +11,7 @@ import PageOverlay from "../../Page/PageOverlay/PageOverlay";
 import "./MenuHeader.scss";
 
 export const MenuHeader: React.FC = () => {
-  const { logout } = useUserContext();
+  const { logout, user } = useUserContext();
   const [opened, setOpened] = useState(false);
   const [showCredits, setShowCredits] = useState(false);
   const openMenu = () => {
@@ -43,16 +43,18 @@ export const MenuHeader: React.FC = () => {
           ></div>
         )}
         <ul className={opened ? "opened" : ""}>
-          <li>
-            <button
-              onClick={() => {
-                logout();
-              }}
-            >
-              <LogOutCircle size={26} fill={variables.pallete4} />
-              Logout
-            </button>
-          </li>
+          {user && (
+            <li>
+              <button
+                onClick={() => {
+                  logout();
+                }}
+              >
+                <LogOutCircle size={26} fill={variables.pallete4} />
+                Logout
+              </button>
+            </li>
+          )}
           <li>
             <a
               href="#credits"

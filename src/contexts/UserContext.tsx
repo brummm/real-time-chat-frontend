@@ -1,11 +1,18 @@
-import React, { createContext, useCallback, useContext, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { useLoadAPI } from "../lib/api";
 import axios from "../lib/axios";
 import { User } from "../lib/models/user";
 
 interface IUserContext {
   user?: User;
+  isReady: boolean;
   setUser: (user: User | undefined) => void;
   logout: () => Promise<boolean>;
   logoutLoading: boolean;
@@ -23,6 +30,12 @@ export const UserContext: React.FC = ({ children }) => {
   const navigate = useNavigate();
   const initialUser = getUserFromSessionStorage();
   const [user, setUserState] = useState<User | undefined>(initialUser);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
   const setUser = useCallback((user: User | undefined) => {
     if (user !== undefined) {
       window.sessionStorage.setItem(SESSION_STORAGE_kEY, JSON.stringify(user));
@@ -31,8 +44,11 @@ export const UserContext: React.FC = ({ children }) => {
     }
     setUserState(user);
   }, []);
-  const { call: callLogout, loading: logoutLoading } = useLoadAPI(() =>
-    axios.post(`/users/logout`)
+
+  const { mutate: callLogout, isLoading: logoutLoading } = useMutation(
+    async () => {
+      await axios.post(`/users/logout`);
+    }
   );
   const logout = useCallback(async () => {
     try {
@@ -45,7 +61,7 @@ export const UserContext: React.FC = ({ children }) => {
     }
   }, [callLogout, navigate, setUser]);
   return (
-    <Context.Provider value={{ user, setUser, logout, logoutLoading }}>
+    <Context.Provider value={{ user, isReady, setUser, logout, logoutLoading }}>
       {children}
     </Context.Provider>
   );

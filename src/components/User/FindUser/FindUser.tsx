@@ -1,10 +1,11 @@
 import { Search } from "@styled-icons/boxicons-regular";
 import { User as UserIcon } from "@styled-icons/boxicons-regular/User";
+import { AxiosError } from "axios";
 import { Formik } from "formik";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
+import { useQuery } from "react-query";
 import * as yup from "yup";
 import { useUserContext } from "../../../contexts/UserContext";
-import { useLoadAPI } from "../../../lib/api";
 import axios from "../../../lib/axios";
 import { User } from "../../../lib/models/user";
 import ErrorMessage from "../../Error/ErrorMessage/ErrorMessage";
@@ -18,17 +19,26 @@ export const FindUser: React.FC<{
   selectUserCallback: (user: User) => void;
   excludeCurrentUser?: boolean;
 }> = ({ selectUserCallback, excludeCurrentUser = true }) => {
-  const { user } = useUserContext();
-  const { call, loading, data, error } = useLoadAPI((username: string) =>
-    axios.get(`/users/profile/${username}`)
+  const { user: userInContext } = useUserContext();
+  const [username, setUsername] = useState<string>();
+
+  const {
+    isLoading,
+    data: user,
+    isError,
+    error,
+  } = useQuery<User, AxiosError>(
+    ["USER", username],
+    async () => {
+      const { data } = await axios.get(`/users/profile/${username}`);
+      return data.user;
+    },
+    { enabled: username !== undefined }
   );
 
-  const onSubmit = useCallback(
-    async (values) => {
-      call(values.username);
-    },
-    [call]
-  );
+  const onSubmit = useCallback(async (values) => {
+    setUsername(values.username);
+  }, []);
 
   const validations = yup.object({
     username: yup
@@ -37,18 +47,18 @@ export const FindUser: React.FC<{
       .test(
         "is-not-current",
         (d) => "Do you want to chat with yourself?",
-        (value) => !(excludeCurrentUser && value === user?.userName)
+        (value) => !(excludeCurrentUser && value === userInContext?.userName)
       ),
   });
 
   const onFoundUserClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      if (selectUserCallback) {
-        selectUserCallback(data.user);
+      if (selectUserCallback && user) {
+        selectUserCallback(user);
       }
     },
-    [selectUserCallback, data]
+    [selectUserCallback, user]
   );
 
   return (
@@ -83,17 +93,17 @@ export const FindUser: React.FC<{
             </div>
             <div className="button">
               <Button label="Find User" type="submit" icon={Search} />
-              {loading && (
+              {isLoading && (
                 <div className="loading">
                   <Loading size="extra-small" />
                 </div>
               )}
             </div>
-            {error && <ErrorMessage message={error} />}
+            {isError && error && <ErrorMessage message={error.message} />}
 
-            {data && (
+            {user && (
               <button className="user" onClick={onFoundUserClick}>
-                <UserCard user={data.user} />
+                <UserCard user={user} />
               </button>
             )}
           </form>

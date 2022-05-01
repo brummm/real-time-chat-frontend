@@ -1,24 +1,33 @@
+import { AxiosError } from "axios";
 import React, { useEffect } from "react";
+import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import Splash from "../components/Splash/Splash";
 import { useUserContext } from "../contexts/UserContext";
-import { useLoadAPI } from "../lib/api";
 import axios from "../lib/axios";
+import { User } from "../lib/models/user";
 
 function HomeRoute() {
   const navigate = useNavigate();
-  const { user, setUser } = useUserContext();
-  const { call, loading, data, error } = useLoadAPI(() =>
-    axios.get("/users/session")
+  const { user: userInContext, setUser, isReady } = useUserContext();
+  const {
+    isLoading,
+    data: user,
+    error,
+  } = useQuery<User, AxiosError>(
+    "SESSION",
+    async () => {
+      const { data } = await axios.get("/users/session");
+      return data.user;
+    },
+    { enabled: isReady && !userInContext }
   );
 
   useEffect(() => {
-    if (user) {
+    if (userInContext) {
       navigate("/chats");
-    } else {
-      call();
     }
-  }, [user, call, navigate]);
+  }, [user, navigate, userInContext]);
 
   useEffect(() => {
     if (error) {
@@ -27,15 +36,12 @@ function HomeRoute() {
   }, [error, navigate]);
 
   useEffect(() => {
-    if (data) {
-      const { user } = data;
-      if (user) {
-        setUser(user);
-      }
+    if (user) {
+      setUser(user);
     }
-  }, [data, setUser]);
+  }, [setUser, user]);
 
-  return <Splash isLoading={loading} />;
+  return <Splash isLoading={isLoading} />;
 }
 
 export default HomeRoute;

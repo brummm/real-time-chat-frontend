@@ -1,6 +1,7 @@
+import { AxiosError } from "axios";
 import React, { useCallback, useEffect } from "react";
+import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { useAutoLoadAPI, useLoadAPI } from "../../../lib/api";
 import axios from "../../../lib/axios";
 import { Chat } from "../../../lib/models/chat";
 import { User } from "../../../lib/models/user";
@@ -18,41 +19,46 @@ const NEW_CHAT_ANCHOR = "#new-chat";
 
 export const ChatList: React.FC = () => {
   const navigate = useNavigate();
-  const { loading, data, error } = useAutoLoadAPI(() => {
-    return axios.get("/chats");
+  const {
+    data: chats,
+    isLoading,
+    isError,
+    error,
+  } = useQuery<Chat[], AxiosError>("CHATS", async () => {
+    const { data } = await axios.get("/chats");
+    return data.chats;
   });
 
-  let {
-    call: createChat,
-    loading: loadingCreateChat,
+  const {
+    mutate: createChat,
     data: dataCreateChat,
+    isError: isErrorCreateChat,
     error: errorCreateChat,
-    clearStates: clearCreateChatStates,
-  } = useLoadAPI((userIds: string[]) => axios.post("/chats", { userIds }));
+    isLoading: isLoadingCreateChat,
+  } = useMutation<Chat, AxiosError, { userIds: string[] }>(
+    async (params): Promise<Chat> => {
+      const { data } = await axios.post("/chats", params);
+      return data.chat;
+    }
+  );
 
   const selectUserCallback = useCallback(
     (user: User) => {
-      createChat([user._id]);
+      createChat({ userIds: [user._id] });
     },
     [createChat]
   );
 
   const onFindUserClose = useCallback(() => {
-    clearCreateChatStates();
-  }, [clearCreateChatStates]);
+    // TODO: test if the states are cleaned after save
+  }, []);
 
   useEffect(() => {
     if (dataCreateChat) {
-      const { id } = dataCreateChat;
-      navigate(`/chats/${id}`);
+      const { _id } = dataCreateChat;
+      navigate(`/chats/${_id}`);
     }
   }, [dataCreateChat, navigate]);
-
-  if (loading) return <Loading size="medium" />;
-  if (error) return <ErrorMessage message={error} />;
-  if (!data) return null;
-
-  const { chats } = data;
 
   const findUserPageOverlay = (
     <PageOverlay
@@ -61,12 +67,14 @@ export const ChatList: React.FC = () => {
       onClose={onFindUserClose}
     >
       <FindUser selectUserCallback={selectUserCallback} />
-      {loadingCreateChat && <Loading />}
-      {errorCreateChat && <ErrorMessage message={errorCreateChat} />}
+      {isLoadingCreateChat && <Loading />}
+      {isErrorCreateChat && errorCreateChat && (
+        <ErrorMessage message={errorCreateChat.message} />
+      )}
     </PageOverlay>
   );
 
-  if (chats.length === 0)
+  if (chats?.length === 0)
     return (
       <NoData>
         <p>You still have no chats.</p>
@@ -77,8 +85,10 @@ export const ChatList: React.FC = () => {
 
   return (
     <div className="ChatList">
+      {isLoading && <Loading size="small" />}
+      {isError && error && <ErrorMessage message={error.message} />}
       <ul className="list">
-        {chats.map((chat: Chat) => (
+        {chats?.map((chat: Chat) => (
           <li key={chat._id} className="chat">
             <ChatCard chat={chat} />
           </li>

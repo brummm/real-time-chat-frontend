@@ -12,34 +12,47 @@ import SendMessageForm, {
 let chatSocket: ChatSocket;
 
 interface Props {
-  chat: ChatModel;
+  chat?: ChatModel;
+  loading?: boolean;
+  error?: string;
 }
 export const Chat: React.FC<Props> = ({ chat }) => {
-  const [messages, setMessages] = useState(chat.messages);
-  const [users, setUsers] = useState(chat.users);
+  const [messages, setMessages] = useState(chat?.messages);
+  const [users, setUsers] = useState(chat?.users);
+  useEffect(() => {
+    if (chat) {
+      setMessages(chat.messages);
+      setUsers(chat.users);
+    }
+  }, [chat]);
 
   const [messageSizeClassName, setMessageSizeClassName] =
     useState<MessageSize["size"]>("normal");
 
   const onNewMessage = useCallback(
     (message: ChatMessage) => {
-      setMessages((oldMessages) => [...oldMessages, message]);
+      setMessages((oldMessages) => {
+        if (oldMessages === undefined) return [message];
+        return [...oldMessages, message];
+      });
     },
     [setMessages]
   );
 
   useEffect(() => {
-    chatSocket = new ChatSocket();
-    chatSocket.join(chat._id);
-    chatSocket.onNewMessage = onNewMessage;
-    return () => {
-      chatSocket.close();
-    };
-  }, [chatSocket, onNewMessage]);
+    if (chat) {
+      chatSocket = new ChatSocket();
+      chatSocket.join(chat._id);
+      chatSocket.onNewMessage = onNewMessage;
+      return () => {
+        chatSocket.close();
+      };
+    }
+  }, [chat, onNewMessage]);
 
   const sendMessage = useCallback(
     (message: string) => {
-      chatSocket.sendMessage(message, chat._id);
+      if (chat) chatSocket.sendMessage(message, chat._id);
     },
     [chat]
   );
@@ -50,17 +63,21 @@ export const Chat: React.FC<Props> = ({ chat }) => {
 
   return (
     <div className={`Chat ${messageSizeClassName}Message`}>
-      <ChatUsersContext.Provider value={{ users }}>
-        <div className="messages">
-          {messages && <ChatMessages messages={messages} />}
-        </div>
-      </ChatUsersContext.Provider>
-      <section className="sendMessage">
-        <SendMessageForm
-          updateMessageSize={updateMessageSize}
-          sendMessage={sendMessage}
-        />
-      </section>
+      {chat && users && (
+        <>
+          <ChatUsersContext.Provider value={{ users }}>
+            <div className="messages">
+              {messages && <ChatMessages messages={messages} />}
+            </div>
+          </ChatUsersContext.Provider>
+          <section className="sendMessage">
+            <SendMessageForm
+              updateMessageSize={updateMessageSize}
+              sendMessage={sendMessage}
+            />
+          </section>
+        </>
+      )}
     </div>
   );
 };

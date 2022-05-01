@@ -36,11 +36,11 @@ export const SignUpForm: React.FC<Props> = ({ afterSubmit }) => {
       validationSchema={validations}
     >
       {({
-        errors,
-        handleBlur,
-        handleChange,
         handleSubmit,
         isSubmitting,
+        handleBlur,
+        handleChange,
+        errors,
         touched,
         values,
       }) => (
@@ -67,7 +67,7 @@ export const SignUpForm: React.FC<Props> = ({ afterSubmit }) => {
                 required
                 icon={MailSend}
                 value={values.email}
-                error={errors.email}
+                error={touched.email ? errors.email : ""}
               />
             </div>
             <div className="input">
@@ -80,7 +80,7 @@ export const SignUpForm: React.FC<Props> = ({ afterSubmit }) => {
                 type="password"
                 required
                 value={values.password}
-                error={errors.password}
+                error={touched.password ? errors.password : ""}
               />
             </div>
             <div className="input">
@@ -93,7 +93,7 @@ export const SignUpForm: React.FC<Props> = ({ afterSubmit }) => {
                 type="password"
                 required
                 value={values.confirmPassword}
-                error={errors.confirmPassword}
+                error={touched.confirmPassword ? errors.confirmPassword : ""}
               />
             </div>
           </div>
@@ -107,7 +107,7 @@ export const SignUpForm: React.FC<Props> = ({ afterSubmit }) => {
               required
               icon={UserRegular}
               value={values.firstName}
-              error={errors.firstName}
+              error={touched.firstName ? errors.firstName : ""}
             />
           </div>
           <div className="input">
@@ -119,7 +119,7 @@ export const SignUpForm: React.FC<Props> = ({ afterSubmit }) => {
               required
               icon={UserRegular}
               value={values.lastName}
-              error={errors.lastName}
+              error={touched.lastName ? errors.lastName : ""}
             />
           </div>
 
@@ -132,7 +132,7 @@ export const SignUpForm: React.FC<Props> = ({ afterSubmit }) => {
               onBlur={handleBlur}
               required
               value={values.birth}
-              error={errors.birth}
+              error={touched.birth ? errors.birth : ""}
             />
           </div>
           <div className="button">

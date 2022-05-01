@@ -1,17 +1,19 @@
 import { LogInCircle, MailSend } from "@styled-icons/boxicons-regular";
 import { Lock } from "@styled-icons/boxicons-solid";
+import { AxiosError } from "axios";
 import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useMutation } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useUserContext } from "../../../../contexts/UserContext";
-import { useLoadAPI } from "../../../../lib/api";
 import axios from "../../../../lib/axios";
+import { User } from "../../../../lib/models/user";
 import InsideContainer from "../../../Containers/InsideContainer/InsideContainer";
 import OutsideContainer from "../../../Containers/OutsideContainer/OutsideContainer";
 import ErrorMessage from "../../../Error/ErrorMessage/ErrorMessage";
 import Button from "../../../Form/Button/Button";
-import InputText, { InputTextState } from "../../../Form/InputText/InputText";
+import InputText from "../../../Form/InputText/InputText";
 import Loading from "../../../Loading/Loading";
 import Title from "../../../Texts/Title/Title";
 import "../SignInOrSignUp.scss";
@@ -27,12 +29,19 @@ const validationSchema = yup.object({
 export const SignIn: React.FC = () => {
   const navigate = useNavigate();
   const { setUser } = useUserContext();
+
   const {
-    call: signIn,
-    loading,
-    data,
+    mutate: signIn,
+    isLoading,
+    data: user,
+    isError,
     error,
-  } = useLoadAPI((params: any) => axios.post("/users/login", params));
+  } = useMutation<User, AxiosError, User>(
+    async (params: User): Promise<User> => {
+      const { data } = await axios.post("/users/login", params);
+      return data.user;
+    }
+  );
 
   const onSubmit = async (values: any) => {
     const data: any = {
@@ -43,11 +52,11 @@ export const SignIn: React.FC = () => {
   };
 
   useEffect(() => {
-    if (data && data.user) {
-      setUser(data.user);
+    if (user) {
+      setUser(user);
       navigate("/chats");
     }
-  }, [data, navigate, setUser]);
+  }, [user, navigate, setUser]);
 
   return (
     <div className="SignInOrSignUp">
@@ -72,9 +81,9 @@ export const SignIn: React.FC = () => {
               values,
             }) => (
               <form onSubmit={handleSubmit}>
-                {error && (
+                {isError && error && (
                   <div className="errorMessage">
-                    <ErrorMessage message={error} />
+                    <ErrorMessage message={error.message} />
                   </div>
                 )}
                 <div className="input">
@@ -109,7 +118,7 @@ export const SignIn: React.FC = () => {
               </form>
             )}
           </Formik>
-          {loading && <Loading />}
+          {isLoading && <Loading />}
         </InsideContainer>
       </OutsideContainer>
     </div>
