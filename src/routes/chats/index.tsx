@@ -9,6 +9,7 @@ import Header from "../../components/Header/Header";
 import { Page } from "../../components/Page/Page";
 import axios from "../../lib/axios";
 import "./ChatListAndChat.scss";
+import AuthGuard from "../../components/Guards/AuthGuard";
 
 export default function ChatsRoute() {
   const { chatId } = useParams();
@@ -35,11 +36,13 @@ export default function ChatsRoute() {
   );
 
   return (
-    <Page variation="top" header={chat && _Header}>
-      <div className={`ChatListAndChat ${!chat ? "noChat" : ""}`}>
-        <ChatList />
-        <Chat chat={chat} loading={isLoading} />
-      </div>
-    </Page>
+    <AuthGuard signInPath="/sign-in">
+      <Page variation="top" header={chat && _Header}>
+        <div className={`ChatListAndChat ${!chat ? "noChat" : ""}`}>
+          <ChatList />
+          <Chat chat={chat} loading={isLoading} />
+        </div>
+      </Page>
+    </AuthGuard>
   );
 }

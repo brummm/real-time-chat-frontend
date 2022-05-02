@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useUserContext } from "../../../contexts/UserContext";
+import { useAuth } from "../../../contexts/AuthContext";
 import { Chat } from "../../../lib/models/chat";
 import { User } from "../../../lib/models/user";
 import variables from "../../../styles/variables.scss";
@@ -8,7 +8,7 @@ import UserAvatar from "../../User/UserAvatar/UserAvatar";
 import "./ChatHeader.scss";
 
 export const ChatHeader: React.FC<{ chat?: Chat }> = ({ chat }) => {
-  const { user: currentUser } = useUserContext();
+  const { user: currentUser } = useAuth();
   const [user, setUser] = useState<User>();
 
   useEffect(() => {

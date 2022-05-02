@@ -13,10 +13,19 @@
     align-self: flex-end;
   }
 
-  .user {
-    color: $pallete2;
+  .userNameAndHour {
+    display: flex;
     font-size: 12px;
-    font-weight: bold;
-    margin-bottom: 8px;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    .user {
+      color: $pallete2;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .hours {
+      opacity: .6;
+    }
   }
+
 }

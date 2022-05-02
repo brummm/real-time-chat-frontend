@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import React, { useEffect } from "react";
 import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
-import { useUserContext } from "../../../../contexts/UserContext";
+import { useAuth } from "../../../../contexts/AuthContext";
 import axios from "../../../../lib/axios";
 import { User } from "../../../../lib/models/user";
 import InsideContainer from "../../../Containers/InsideContainer/InsideContainer";
@@ -17,7 +17,7 @@ import "./SignUp.scss";
 import SignUpForm from "./SignUpForm/SignUpForm";
 
 export const SignUp: React.FC = () => {
-  const { user, setUser } = useUserContext();
+  const { user, setUser } = useAuth();
 
   const {
     mutate: signUp,

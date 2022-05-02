@@ -24,7 +24,8 @@ export const SendMessageForm: React.FC<Props> = ({
   updateMessageSize,
   sendMessage,
 }) => {
-  const [message, setMessage] = useState("");
+  const message = useRef("");
+  // const [message, setMessage] = useState("");
   const [messageSize, setMessageSize] = useState<MessageSize["size"]>("normal");
   const messageInputRef = useRef<HTMLParagraphElement>(null);
 
@@ -37,17 +38,17 @@ export const SendMessageForm: React.FC<Props> = ({
     }
   }, []);
 
-  const submit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (message !== "") {
-      sendMessage(message);
-      setMessage("");
+  function sendAndClearMessage() {
+    const finalMessage = message.current.trim();
+    if (finalMessage.length !== 0) {
+      sendMessage(finalMessage);
+      message.current = "";
       if (messageInputRef.current) {
         messageInputRef.current.innerText = "";
         updateTextareaHeight(messageInputRef.current);
       }
     }
-  };
+  }
 
   const evaluateMessageSize = (lines: number) => {
     let size: MessageSize["size"] = "normal";
@@ -75,7 +76,20 @@ export const SendMessageForm: React.FC<Props> = ({
   const handleChange = (e: FormEvent<HTMLParagraphElement>) => {
     const text = messageInputRef.current?.innerText || "";
     updateTextareaHeight(e.currentTarget);
-    setMessage(text);
+    message.current = text;
+  };
+
+  const ENTER = "Enter";
+  function handleEnter(e: React.KeyboardEvent<HTMLParagraphElement>) {
+    if (e.key === ENTER && !e.shiftKey) {
+      e.preventDefault();
+      sendAndClearMessage();
+    }
+  }
+
+  const submit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    sendAndClearMessage();
   };
 
   return (
@@ -85,6 +99,7 @@ export const SendMessageForm: React.FC<Props> = ({
         ref={messageInputRef}
         placeholder="Type here..."
         onInput={handleChange}
+        onKeyDown={handleEnter}
         contentEditable
       />
       <button type="submit">

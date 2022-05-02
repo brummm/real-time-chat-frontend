@@ -1,14 +1,11 @@
 import { LogInCircle, MailSend } from "@styled-icons/boxicons-regular";
 import { Lock } from "@styled-icons/boxicons-solid";
-import { AxiosError } from "axios";
 import { Formik } from "formik";
-import React, { useEffect } from "react";
-import { useMutation } from "react-query";
+import React, { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import { useUserContext } from "../../../../contexts/UserContext";
-import axios from "../../../../lib/axios";
-import { User } from "../../../../lib/models/user";
+import { useAuth } from "../../../../contexts/AuthContext";
+import { useQueryString } from "../../../../hooks/useQueryString";
 import InsideContainer from "../../../Containers/InsideContainer/InsideContainer";
 import OutsideContainer from "../../../Containers/OutsideContainer/OutsideContainer";
 import ErrorMessage from "../../../Error/ErrorMessage/ErrorMessage";
@@ -18,6 +15,8 @@ import Loading from "../../../Loading/Loading";
 import Title from "../../../Texts/Title/Title";
 import "../SignInOrSignUp.scss";
 
+export const REDIRECT_ATTR_NAME = "redirectTo";
+
 const validationSchema = yup.object({
   email: yup
     .string()
@@ -26,37 +25,30 @@ const validationSchema = yup.object({
   password: yup.string().required("Password is required."),
 });
 
-export const SignIn: React.FC = () => {
+export const SignIn: React.FC<{
+  defaultRedirect?: string;
+  showSignUpLink?: boolean;
+}> = ({ defaultRedirect = "/chats", showSignUpLink = true }) => {
   const navigate = useNavigate();
-  const { setUser } = useUserContext();
+  const { signInMutation, isAuthenticated } = useAuth();
+  const query = useQueryString();
+  const redirectTo = useRef(query.get(REDIRECT_ATTR_NAME) || defaultRedirect);
 
-  const {
-    mutate: signIn,
-    isLoading,
-    data: user,
-    isError,
-    error,
-  } = useMutation<User, AxiosError, User>(
-    async (params: User): Promise<User> => {
-      const { data } = await axios.post("/users/login", params);
-      return data.user;
-    }
-  );
+  const { isLoading, isError, mutate: signIn, error } = signInMutation;
 
   const onSubmit = async (values: any) => {
-    const data: any = {
-      ...values,
-      equipmentId: "equipmentId",
-    };
-    signIn(data);
+    try {
+      await signIn(values);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
-    if (user) {
-      setUser(user);
-      navigate("/chats");
+    if (isAuthenticated) {
+      window.location.href = redirectTo.current;
     }
-  }, [user, navigate, setUser]);
+  }, [navigate, isAuthenticated]);
 
   return (
     <div className="SignInOrSignUp">
@@ -83,7 +75,9 @@ export const SignIn: React.FC = () => {
               <form onSubmit={handleSubmit}>
                 {isError && error && (
                   <div className="errorMessage">
-                    <ErrorMessage message={error.message} />
+                    <ErrorMessage
+                      message={error.response?.data.error || error.message}
+                    />
                   </div>
                 )}
                 <div className="input">
@@ -112,9 +106,11 @@ export const SignIn: React.FC = () => {
                 <div className="button">
                   <Button label="Sign me In" type="submit" icon={LogInCircle} />
                 </div>
-                <div className="link">
-                  <Link to="/sign-up">I want to sign up.</Link>
-                </div>
+                {showSignUpLink && (
+                  <div className="link">
+                    <Link to="/sign-up">I want to sign up.</Link>
+                  </div>
+                )}
               </form>
             )}
           </Formik>

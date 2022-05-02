@@ -1,0 +1,12 @@
+@import '../../../../styles/variables.scss';
+.ChatMessagesDay {
+  @include shadow;
+  @include borderRadius;
+  background-color: $pallete4;
+  color: $pallete3;
+  font-size: 12px;
+  margin: 10px auto;
+  max-width: 100px;
+  padding: 6px;
+  text-align: center;
+}

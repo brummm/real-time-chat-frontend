@@ -5,7 +5,7 @@ import { Formik } from "formik";
 import React, { useCallback, useState } from "react";
 import { useQuery } from "react-query";
 import * as yup from "yup";
-import { useUserContext } from "../../../contexts/UserContext";
+import { useAuth } from "../../../contexts/AuthContext";
 import axios from "../../../lib/axios";
 import { User } from "../../../lib/models/user";
 import ErrorMessage from "../../Error/ErrorMessage/ErrorMessage";
@@ -19,7 +19,7 @@ export const FindUser: React.FC<{
   selectUserCallback: (user: User) => void;
   excludeCurrentUser?: boolean;
 }> = ({ selectUserCallback, excludeCurrentUser = true }) => {
-  const { user: userInContext } = useUserContext();
+  const { user: userInContext } = useAuth();
   const [username, setUsername] = useState<string>();
 
   const {

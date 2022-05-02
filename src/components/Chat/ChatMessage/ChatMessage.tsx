@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef } from "react";
+import { useAuth } from "../../../contexts/AuthContext";
 import { ChatUsersContext } from "../../../contexts/ChatUsersContext";
-import { useUserContext } from "../../../contexts/UserContext";
 import { ChatMessage as ChatMessageModel } from "../../../lib/models/chat-message";
 import "./ChatMessage.scss";
 
@@ -9,7 +9,7 @@ interface Props {
   first?: boolean;
 }
 export const ChatMessage: React.FC<Props> = ({ message, first = false }) => {
-  const { user: currentUser } = useUserContext();
+  const { user: currentUser } = useAuth();
   const { users } = useContext(ChatUsersContext);
   const messageRef = useRef<HTMLDivElement>(null);
 
@@ -33,10 +33,23 @@ export const ChatMessage: React.FC<Props> = ({ message, first = false }) => {
       messageRef.current.scrollIntoView();
     }
   }, [messageRef]);
+
+  const date = new Date(message.createdAt!);
+
+  const hour = Intl.DateTimeFormat("en-US", { timeStyle: "short" }).format(
+    date
+  );
+
   return (
     <div className={classNames.join(" ")} ref={messageRef}>
-      {first && userName && <p className="user">@{userName}</p>}
-      <p className="message">{chatMessage}</p>
+      <div className="userNameAndHour">
+        {first && userName && <p className="user">@{userName}</p>}
+        <p className="hours">{hour}</p>
+      </div>
+      <p
+        className="message"
+        dangerouslySetInnerHTML={{ __html: chatMessage.replace("\n", "<br>") }}
+      />
     </div>
   );
 };
