@@ -30,10 +30,14 @@ export const FindUser: React.FC<{
   } = useQuery<User, AxiosError>(
     ["USER", username],
     async () => {
-      const { data } = await axios.get(`/users/profile/${username}`);
-      return data.user;
+      try {
+        const { data } = await axios.get(`/users/profile/${username}`);
+        return data.user;
+      } catch (e: any) {
+        throw Error(e.response.data.error);
+      }
     },
-    { enabled: username !== undefined }
+    { enabled: username !== undefined, retry: false }
   );
 
   const onSubmit = useCallback(async (values) => {
@@ -87,7 +91,10 @@ export const FindUser: React.FC<{
                 value={values.username}
                 error={errors.username}
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={(e) => {
+                  if (username) setUsername(undefined);
+                  return handleChange(e);
+                }}
                 icon={UserIcon}
               />
             </div>
@@ -101,7 +108,7 @@ export const FindUser: React.FC<{
             </div>
             {isError && error && <ErrorMessage message={error.message} />}
 
-            {user && (
+            {user && user.userName === username && (
               <button className="user" onClick={onFoundUserClick}>
                 <UserCard user={user} />
               </button>

@@ -4,6 +4,16 @@
   .ChatList {
     display: none; 
   }
+
+  &.noChat {
+    .ChatList {
+      display: flex;
+      flex: 1;
+    }
+    .Chat {
+      display: none;
+    }
+  }
   
   @include sm {
     display: flex;
@@ -15,14 +25,14 @@
     }
     .Chat {
       align-self: flex-end;
-      flex: 1;
+      flex-grow: 2;
+    }
+
+    &.noChat .Chat {
+      display: block;
+      flex-grow: 2;
     }
   }
 
-  &.noChat {
-    .ChatList {
-      display: flex;
-      flex: 1;
-    }
-  }
+  
 }

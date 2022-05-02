@@ -2,6 +2,7 @@ import { X } from "@styled-icons/boxicons-regular";
 import { useCallback, useEffect, useState } from "react";
 import "./PageOverlay.scss";
 
+export function closeIfSameHash(hash: string): void {}
 interface Props {
   hash: string;
   title?: string;
@@ -34,7 +35,7 @@ export const PageOverlay: React.FC<Props> = ({
     }
 
     setVisible(_visible);
-  }, [hash]);
+  }, [hash, onClose]);
 
   useEffect(() => {
     window.addEventListener("hashchange", hashChange);

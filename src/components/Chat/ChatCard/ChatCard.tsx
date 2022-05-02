@@ -31,7 +31,12 @@ export const ChatCard: React.FC<{ chat: Chat }> = ({ chat }) => {
                 @{user.userName}
               </span>
             ))}
-          {message && <span className="lastMessage">{message}</span>}
+          {message.length !== 0 && (
+            <span className="lastMessage">{message}</span>
+          )}
+          {message.length === 0 && (
+            <span className="lastMessage noMessage">Still no messages</span>
+          )}
         </p>
       </Link>
     </div>

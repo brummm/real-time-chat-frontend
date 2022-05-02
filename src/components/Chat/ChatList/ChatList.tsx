@@ -43,8 +43,8 @@ export const ChatList: React.FC = () => {
   );
 
   const selectUserCallback = useCallback(
-    (user: User) => {
-      createChat({ userIds: [user._id] });
+    async (user: User) => {
+      await createChat({ userIds: [user._id] });
     },
     [createChat]
   );
@@ -54,6 +54,8 @@ export const ChatList: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    console.log(dataCreateChat);
+
     if (dataCreateChat) {
       const { _id } = dataCreateChat;
       navigate(`/chats/${_id}`);

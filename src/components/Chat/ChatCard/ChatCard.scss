@@ -22,6 +22,9 @@
       }
       .lastMessage {
         display: block;
+        &.noMessage {
+          opacity: 0.6;
+        }
       }
     }
   }
