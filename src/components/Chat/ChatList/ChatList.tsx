@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../lib/axios";
@@ -12,6 +12,7 @@ import NoData from "../../NoData/NoData";
 import PageOverlay from "../../Page/PageOverlay/PageOverlay";
 import FindUser from "../../User/FindUser/FindUser";
 import ChatCard from "../ChatCard/ChatCard";
+import { FilterChatOrFindNewUser } from "../FilterChatOrFindNewUser/FilterChatOrFindNewUser";
 import NewChatButton from "../NewChatButton/NewChatButton";
 import "./ChatList.scss";
 
@@ -19,6 +20,7 @@ const NEW_CHAT_ANCHOR = "#new-chat";
 
 export const ChatList: React.FC = () => {
   const navigate = useNavigate();
+  const [filter, setFilter] = useState("");
   const {
     data: chats,
     isLoading,
@@ -89,12 +91,28 @@ export const ChatList: React.FC = () => {
     <div className="ChatList">
       {isLoading && <LoadingCentered size="small" />}
       {isError && error && <ErrorMessage message={error.message} />}
+      <FilterChatOrFindNewUser
+        onFilter={setFilter}
+        onUserSelect={selectUserCallback}
+      />
       <ul className="list">
-        {chats?.map((chat: Chat) => (
-          <li key={chat._id} className="chat">
-            <ChatCard chat={chat} />
-          </li>
-        ))}
+        {chats
+          ?.filter((chat) => {
+            if (filter === "") return true;
+            const hasOnUsername = chat.users.find((user) =>
+              user.userName.toLowerCase().includes(filter.toLocaleLowerCase())
+            );
+            if (hasOnUsername) return true;
+            const hasOnMessages = chat.messages.find((message) =>
+              message.message.toLowerCase().includes(filter.toLocaleLowerCase())
+            );
+            return hasOnMessages;
+          })
+          .map((chat: Chat) => (
+            <li key={chat._id} className="chat">
+              <ChatCard chat={chat} filter={filter} />
+            </li>
+          ))}
       </ul>
 
       <div className="newChatButton">

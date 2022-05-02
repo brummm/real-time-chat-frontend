@@ -7,7 +7,7 @@
 
   &.noChat {
     .ChatList {
-      display: flex;
+      display: block;
       flex: 1;
     }
     .Chat {
@@ -20,7 +20,7 @@
     justify-content: flex-end;
     .ChatList {
       background: linear-gradient(90deg, rgba(247,247,242,1) 0%, rgba(247,247,242,1) 88%, rgba(228,228,224,1) 97%, rgba(200,200,200,1) 100%);
-      display: initial; 
+      display: block; 
       width: 18rem;
     }
     .Chat {

@@ -1,14 +1,8 @@
 import { StyledIcon } from "@styled-icons/styled-icon";
-import React, { DetailedHTMLProps, InputHTMLAttributes, useState } from "react";
+import React, { DetailedHTMLProps, InputHTMLAttributes } from "react";
 import variables from "../../../styles/variables.scss";
 import "./InputText.scss";
 
-export interface InputTextState {
-  [name: string]: {
-    value: string;
-    valid: boolean;
-  };
-}
 interface Props
   extends DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
