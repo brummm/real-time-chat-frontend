@@ -7,7 +7,7 @@ import { Chat } from "../../../lib/models/chat";
 import { User } from "../../../lib/models/user";
 import ErrorMessage from "../../Error/ErrorMessage/ErrorMessage";
 import { ButtonAnchor } from "../../Form/Button/Button";
-import { Loading } from "../../Loading/Loading";
+import { Loading, LoadingCentered } from "../../Loading/Loading";
 import NoData from "../../NoData/NoData";
 import PageOverlay from "../../Page/PageOverlay/PageOverlay";
 import FindUser from "../../User/FindUser/FindUser";
@@ -85,7 +85,7 @@ export const ChatList: React.FC = () => {
 
   return (
     <div className="ChatList">
-      {isLoading && <Loading size="small" />}
+      {isLoading && <LoadingCentered size="small" />}
       {isError && error && <ErrorMessage message={error.message} />}
       <ul className="list">
         {chats?.map((chat: Chat) => (

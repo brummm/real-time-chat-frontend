@@ -21,11 +21,9 @@ export const Header: React.FC = ({ children }) => {
   return (
     <>
       <header className="header">
-        <div>
-          {children === undefined && <DefaultHeader />}
-          {children}
-          <MenuHeader />
-        </div>
+        {children === undefined && <DefaultHeader />}
+        {children}
+        <MenuHeader />
       </header>
     </>
   );

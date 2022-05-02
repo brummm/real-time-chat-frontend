@@ -1,26 +1,23 @@
 @import "../../styles/variables.scss";
 
 .header {
+  align-items: center;
+  background-color: $pallete0;
+  display: flex;
   height: $headerHeight;
-  background-color: yellow;
-  > div {
-    align-items: center;
-    background-color: $pallete0;
-    display: flex;
-    height: $headerHeight;
-    justify-content: space-between;
-    padding-left: 16px;
-    position: fixed;
-    width: 100vw;
-    z-index: 10;
+  justify-content: space-between;
+  position: sticky;
+  padding-left: 16px;
+  top: 0;
+  width: 100vw;
+  z-index: 10;
 
-    .title {
-      color: $pallete4;
-      flex: 1;
-      font-size: 21px;
-      margin: 0;
-      margin-left: 16px;
-      padding: 0;
-    }
+  .title {
+    color: $pallete4;
+    flex: 1;
+    font-size: 21px;
+    margin: 0;
+    margin-left: 16px;
+    padding: 0;
   }
 }

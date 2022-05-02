@@ -5,11 +5,18 @@ import { Chat } from "../../../lib/models/chat";
 import UserAvatar from "../../User/UserAvatar/UserAvatar";
 import "./ChatCard.scss";
 
+const MESSAGE_THRESHOLD = 70;
+
 export const ChatCard: React.FC<{ chat: Chat }> = ({ chat }) => {
   const { user } = useAuth();
   let message = "";
   if (chat.messages.length) {
-    message = chat.messages[chat.messages.length - 1].message;
+    message = chat.messages.slice(-1)[0].message;
+    if (message.length > MESSAGE_THRESHOLD) {
+      message = message.substring(0, MESSAGE_THRESHOLD);
+      const lastSpaceIndex = message.lastIndexOf(" ");
+      message = message.substring(0, lastSpaceIndex) + "...";
+    }
   }
 
   return (

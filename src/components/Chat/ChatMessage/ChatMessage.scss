@@ -3,6 +3,7 @@
 .ChatMessage {
   @include shadow;
   @include borderRadius;
+  align-self: flex-start;
   background-color: $pallete4;
   margin-bottom: 8px;
   max-width: 90%;
@@ -22,6 +23,7 @@
       color: $pallete2;
       font-weight: bold;
       margin-bottom: 8px;
+      margin-right: 1rem;
     }
     .hours {
       opacity: .6;
