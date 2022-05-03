@@ -89,31 +89,35 @@ export const ChatList: React.FC = () => {
 
   return (
     <div className="ChatList">
-      {isLoading && <LoadingCentered size="small" />}
-      {isError && error && <ErrorMessage message={error.message} />}
       <FilterChatOrFindNewUser
         onFilter={setFilter}
         onUserSelect={selectUserCallback}
       />
-      <ul className="list">
-        {chats
-          ?.filter((chat) => {
-            if (filter === "") return true;
-            const hasOnUsername = chat.users.find((user) =>
-              user.userName.toLowerCase().includes(filter.toLocaleLowerCase())
-            );
-            if (hasOnUsername) return true;
-            const hasOnMessages = chat.messages.find((message) =>
-              message.message.toLowerCase().includes(filter.toLocaleLowerCase())
-            );
-            return hasOnMessages;
-          })
-          .map((chat: Chat) => (
-            <li key={chat._id} className="chat">
-              <ChatCard chat={chat} filter={filter} />
-            </li>
-          ))}
-      </ul>
+      <div className="list">
+        {isLoading && <LoadingCentered size="small" />}
+        {isError && error && <ErrorMessage message={error.message} />}
+        <ul>
+          {chats
+            ?.filter((chat) => {
+              if (filter === "") return true;
+              const hasOnUsername = chat.users.find((user) =>
+                user.userName.toLowerCase().includes(filter.toLocaleLowerCase())
+              );
+              if (hasOnUsername) return true;
+              const hasOnMessages = chat.messages.find((message) =>
+                message.message
+                  .toLowerCase()
+                  .includes(filter.toLocaleLowerCase())
+              );
+              return hasOnMessages;
+            })
+            .map((chat: Chat) => (
+              <li key={chat._id} className="chat">
+                <ChatCard chat={chat} filter={filter} />
+              </li>
+            ))}
+        </ul>
+      </div>
 
       <div className="newChatButton">
         <NewChatButton href={NEW_CHAT_ANCHOR} />

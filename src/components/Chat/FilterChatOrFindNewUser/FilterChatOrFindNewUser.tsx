@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { User } from "../../../lib/models/user";
+import "./FilterChatOrFindNewUser.scss";
 
 interface Props {
   onFilter: (filter: string) => void;

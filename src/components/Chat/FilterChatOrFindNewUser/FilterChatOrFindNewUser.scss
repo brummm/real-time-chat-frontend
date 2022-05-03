@@ -1,0 +1,25 @@
+@import "../../../styles/variables.scss";
+
+.FilterChatOrFindNewUser {
+  background-color: rgba($pallete2, .3);
+  padding: 16px;
+  form input {
+    @include invertedInnerShadow;
+
+    background-color: $pallete4;
+    border: 0;
+    border-radius: $borderRadius;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 22px;
+    outline: none;
+
+    transition: all ease-out 150ms;
+    width: 100%;
+
+    &:empty:not(:focus)::before {
+      color: #93827F;
+      content: attr(placeholder);
+    }
+  }
+}
