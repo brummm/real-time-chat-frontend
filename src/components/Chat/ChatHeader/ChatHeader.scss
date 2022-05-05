@@ -13,9 +13,8 @@
   }
 
   figure {
-    @include borderRadius;
-    background-color: $pallete4;
-    color: $pallete2;
+    border: 2px solid $pallete4;
+    border-radius: 50%;
     height: 38px;
     margin-left: 20px;
     width: 38px;

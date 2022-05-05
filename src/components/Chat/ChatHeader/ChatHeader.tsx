@@ -25,10 +25,6 @@ export const ChatHeader: React.FC<{ chat?: Chat }> = ({ chat }) => {
   // TODO: format for multiple users
   // const { userName } = usersExceptCurrent[0];
 
-  if (!chat && !user) {
-    return null;
-  }
-
   return (
     <div className="ChatHeader">
       <Link to="/chats" className="back">
@@ -46,8 +42,12 @@ export const ChatHeader: React.FC<{ chat?: Chat }> = ({ chat }) => {
           />
         </svg>
       </Link>
-      <UserAvatar user={user!} />
-      <h1>@{user?.userName}</h1>
+      {user && (
+        <>
+          <UserAvatar user={user!} />
+          <h1>@{user?.userName}</h1>
+        </>
+      )}
     </div>
   );
 };

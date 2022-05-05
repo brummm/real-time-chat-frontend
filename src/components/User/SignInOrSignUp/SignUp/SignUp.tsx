@@ -38,7 +38,7 @@ export const SignUp: React.FC = () => {
 
   return (
     <div className="SignInOrSignUp SignUp">
-      <OutsideContainer>
+      <OutsideContainer size="medium">
         <Title>Sign Up</Title>
         <InsideContainer>
           {!user && <SignUpForm afterSubmit={signUp} />}

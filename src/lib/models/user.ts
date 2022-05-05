@@ -30,4 +30,5 @@ export interface User {
   email: string;
   role: string;
   birth: string;
+  multiavatar: string;
 }

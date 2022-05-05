@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useRef } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { ChatUsersContext } from "../../../contexts/ChatUsersContext";
 import { ChatMessage as ChatMessageModel } from "../../../lib/models/chat-message";
@@ -27,12 +27,6 @@ export const ChatMessage: React.FC<Props> = ({ message, first = false }) => {
   if (owner === currentUser?._id) {
     classNames.push("messageIsFromCurrentUser");
   }
-
-  useEffect(() => {
-    if (messageRef.current) {
-      messageRef.current.scrollIntoView();
-    }
-  }, [messageRef]);
 
   const date = new Date(message.createdAt!);
 

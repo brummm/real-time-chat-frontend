@@ -1,36 +1,59 @@
 @import "../../styles/variables.scss";
 
+
+@include sm {
+  #root div.page main {
+    overflow: hidden;
+  }
+}
+
 .ChatListAndChat {
-  .ChatList {
-    display: none; 
+  position: relative;
+  display: grid;
+  grid-template-columns: 100vw 100vw;
+  overflow: hidden;
+  width: 100vw;
+
+  > * {
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 100vw;
   }
 
+  .chatList {
+    background-color: rgba($pallete4, .8);
+  }
+
+  > .chat {
+    background-color: $pallete4;
+    margin-left: -100vw;
+    position: relative;
+    transition: all ease-in-out 150ms;
+  }
+
+  
   &.noChat {
-    .ChatList {
-      display: block;
-      flex: 1;
-    }
-    .Chat {
-      display: none;
+    > .chat {
+      margin-left: 0;
     }
   }
   
   @include sm {
-    display: flex;
-    justify-content: flex-end;
-    .ChatList {
+    grid-template-columns: 22rem auto;
+    .chatList {
       background: linear-gradient(90deg, rgba(247,247,242,1) 0%, rgba(247,247,242,1) 88%, rgba(228,228,224,1) 97%, rgba(200,200,200,1) 100%);
       display: block; 
-      width: 18rem;
+      width: 22rem;
     }
-    .Chat {
-      align-self: flex-end;
-      flex-grow: 2;
+    .chat {
+      align-self: end;
+      margin-left: 0;
+      width: auto;
     }
 
-    &.noChat .Chat {
+    &.noChat > .chat {
       display: block;
-      flex-grow: 2;
     }
   }
 

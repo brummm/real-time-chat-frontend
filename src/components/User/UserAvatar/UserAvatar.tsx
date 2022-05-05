@@ -1,19 +1,27 @@
 import { User as UserIcon } from "@styled-icons/boxicons-solid";
 import React from "react";
 import { User } from "../../../lib/models/user";
-import './UserAvatar.scss';
+import multiavatar from "@multiavatar/multiavatar";
 
 interface Props {
   user: User;
 }
 export const UserAvatar: React.FC<Props> = ({ user }) => {
-
-  // TODO: implement avatar into backend to change it here
+  const className = "UserAvatar";
 
   return (
-    <figure className="UserAvatar">
-      <UserIcon />
-    </figure>
+    <>
+      {user.multiavatar ? (
+        <figure
+          className={className}
+          dangerouslySetInnerHTML={{ __html: multiavatar(user.multiavatar) }}
+        />
+      ) : (
+        <figure className={className}>
+          <UserIcon />
+        </figure>
+      )}
+    </>
   );
 };
 

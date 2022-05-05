@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ChatUsersContext } from "../../contexts/ChatUsersContext";
 import { Chat as ChatModel } from "../../lib/models/chat";
 import { ChatMessage } from "../../lib/models/chat-message";
@@ -13,12 +13,12 @@ let chatSocket: ChatSocket;
 
 interface Props {
   chat?: ChatModel;
-  loading?: boolean;
-  error?: string;
 }
 export const Chat: React.FC<Props> = ({ chat }) => {
   const [messages, setMessages] = useState(chat?.messages);
   const [users, setUsers] = useState(chat?.users);
+
+  const messagesRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (chat) {
       setMessages(chat.messages);
@@ -35,6 +35,7 @@ export const Chat: React.FC<Props> = ({ chat }) => {
         if (oldMessages === undefined) return [message];
         return [...oldMessages, message];
       });
+      scrollMessagesToBottom();
     },
     [setMessages]
   );
@@ -52,7 +53,10 @@ export const Chat: React.FC<Props> = ({ chat }) => {
 
   const sendMessage = useCallback(
     (message: string) => {
-      if (chat) chatSocket.sendMessage(message, chat._id);
+      if (chat) {
+        chatSocket.sendMessage(message, chat._id);
+        scrollMessagesToBottom();
+      }
     },
     [chat]
   );
@@ -61,12 +65,26 @@ export const Chat: React.FC<Props> = ({ chat }) => {
     setMessageSizeClassName(size);
   };
 
+  function scrollMessagesToBottom() {
+    if (messagesRef.current) {
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    }
+  }
+
+  useEffect(() => {
+    console.log(chat, messagesRef);
+    if (chat && messagesRef) {
+      scrollMessagesToBottom();
+    }
+  }, [chat, messagesRef]);
+
   return (
     <div className={`Chat ${messageSizeClassName}Message`}>
+      <div className="bg"></div>
       {chat && users && (
         <>
           <ChatUsersContext.Provider value={{ users }}>
-            <div className="messages">
+            <div className="messages" ref={messagesRef}>
               {messages && <ChatMessages messages={messages} />}
             </div>
           </ChatUsersContext.Provider>

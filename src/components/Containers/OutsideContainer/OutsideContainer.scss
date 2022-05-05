@@ -1,4 +1,14 @@
 .OutsideContainer {
   padding: 17px;
+  margin: 0 auto;
   position: relative;
+  &.small {
+    max-width: 30rem;
+  }
+  &.medium {
+    max-width: 50rem;
+  }
+  &.large {
+    max-width: 70rem;
+  }
 }

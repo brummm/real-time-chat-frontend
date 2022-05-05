@@ -15,6 +15,7 @@ export const ChatMessages: React.FC<{ messages: ChatMessageModel[] }> = ({
     if (previousDate === undefined) return false;
     return daysAreEqual(previousDate, currentDate);
   }
+
   return (
     <div className="ChatMessages">
       {messages.map((message) => {

@@ -1,8 +1,14 @@
 import React from "react";
 import "./OutsideContainer.scss";
 
-export const OutsideContainer: React.FC = ({ children }) => {
-  return <div className="OutsideContainer">{children}</div>;
+interface Props {
+  size?: "small" | "medium" | "large" | "auto";
+}
+export const OutsideContainer: React.FC<Props> = ({
+  children,
+  size = "auto",
+}) => {
+  return <div className={`OutsideContainer ${size}`}>{children}</div>;
 };
 
 export default OutsideContainer;

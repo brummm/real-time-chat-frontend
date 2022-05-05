@@ -6,8 +6,6 @@
     display: flex;
     text-decoration: none;
     figure {
-      @include borderRadius;
-      background-color: $pallete1;
       height: 50px;
       margin-right: 10px;
       width: 50px;

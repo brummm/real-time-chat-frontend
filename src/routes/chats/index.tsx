@@ -10,6 +10,8 @@ import { Page } from "../../components/Page/Page";
 import axios from "../../lib/axios";
 import "./ChatListAndChat.scss";
 import AuthGuard from "../../components/Guards/AuthGuard";
+import { useRef } from "react";
+import { NoChat } from "../../components/Chat/NoChat/NoChat";
 
 export default function ChatsRoute() {
   const { chatId } = useParams();
@@ -39,8 +41,19 @@ export default function ChatsRoute() {
     <AuthGuard signInPath="/sign-in">
       <Page variation="top" header={chat && _Header}>
         <div className={`ChatListAndChat ${!chat ? "noChat" : ""}`}>
-          <ChatList />
-          <Chat chat={chat} loading={isLoading} />
+          <div className="chatList">
+            <ChatList />
+          </div>
+          <div className="chat">
+            {!chat && (
+              <NoChat
+                isLoading={isLoading}
+                isError={isError}
+                error={error?.response?.data.error || error?.message}
+              />
+            )}
+            {chat && <Chat chat={chat} />}
+          </div>
         </div>
       </Page>
     </AuthGuard>

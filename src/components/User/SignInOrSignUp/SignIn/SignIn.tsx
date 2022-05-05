@@ -52,7 +52,7 @@ export const SignIn: React.FC<{
 
   return (
     <div className="SignInOrSignUp">
-      <OutsideContainer>
+      <OutsideContainer size="small">
         <Title>Sign In</Title>
         <InsideContainer>
           <Formik

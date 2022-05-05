@@ -3,6 +3,23 @@
 .Chat {
   display: grid;
   grid-template-rows: calc(100vh - 60px - $headerHeight) 60px;
+
+  position: relative;
+  z-index: 10;
+  .bg {
+    background: url("../../images/background.png");
+    content: "";
+    opacity: .06;
+
+    display: block;
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+  }
   &.mediumMessage {
     grid-template-rows: calc(100vh - 82px - $headerHeight) 82px;
   }
@@ -10,10 +27,7 @@
     grid-template-rows: calc(100vh - 104px - $headerHeight) 104px;
   }
   .messages {
-    overflow-y: auto;
     overflow-x: hidden;
-  }
-  .sendMessage {
-    background-color: red;
+    overflow-y: auto;
   }
 }

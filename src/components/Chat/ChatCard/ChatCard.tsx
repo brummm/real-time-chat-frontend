@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Chat } from "../../../lib/models/chat";
+import { ChatMessage } from "../../../lib/models/chat-message";
 import UserAvatar from "../../User/UserAvatar/UserAvatar";
 import "./ChatCard.scss";
 
@@ -12,26 +13,30 @@ export const ChatCard: React.FC<{ chat: Chat; filter?: string }> = ({
   filter,
 }) => {
   const { user } = useAuth();
-  let message = "";
+  let lastMessage: ChatMessage | null = null;
+  let messageText = "";
 
   if (chat.messages.length) {
-    message = chat.messages.slice(-1)[0].message;
+    lastMessage = getLastMessageFromChat(chat);
+    messageText = lastMessage.message;
     if (filter) {
       const filteredMessage = chat.messages.find((message) =>
         message.message.toLocaleLowerCase().includes(filter.toLocaleLowerCase())
       );
-      console.log(filteredMessage);
 
-      if (filteredMessage) message = filteredMessage.message;
+      if (filteredMessage) {
+        lastMessage = filteredMessage;
+        messageText = filteredMessage.message;
+      }
     }
 
-    if (message.length > MESSAGE_THRESHOLD) {
-      message = message.substring(0, MESSAGE_THRESHOLD);
-      const lastSpaceIndex = message.lastIndexOf(" ");
-      message = message.substring(0, lastSpaceIndex) + "...";
+    if (messageText.length > MESSAGE_THRESHOLD) {
+      messageText = messageText.substring(0, MESSAGE_THRESHOLD);
+      const lastSpaceIndex = messageText.lastIndexOf(" ");
+      messageText = messageText.substring(0, lastSpaceIndex) + "...";
     }
     if (filter) {
-      message = highlightFilter(message);
+      messageText = highlightFilter(messageText);
     }
   }
 
@@ -54,13 +59,15 @@ export const ChatCard: React.FC<{ chat: Chat; filter?: string }> = ({
                 @{user.userName}
               </span>
             ))}
-          {message.length !== 0 && (
-            <span
-              className="lastMessage"
-              dangerouslySetInnerHTML={{ __html: message }}
-            />
+          {messageText.length !== 0 && (
+            <span className="lastMessage">
+              {lastMessage?.owner === user?._id && (
+                <span className="you">You: </span>
+              )}
+              <span dangerouslySetInnerHTML={{ __html: messageText }}></span>
+            </span>
           )}
-          {message.length === 0 && (
+          {messageText.length === 0 && (
             <span className="lastMessage noMessage">Still no messages</span>
           )}
         </p>
@@ -68,5 +75,9 @@ export const ChatCard: React.FC<{ chat: Chat; filter?: string }> = ({
     </div>
   );
 };
+
+function getLastMessageFromChat(chat: Chat): ChatMessage {
+  return chat.messages.slice(-1)[0];
+}
 
 export default ChatCard;

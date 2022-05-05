@@ -119,9 +119,9 @@ export const ChatList: React.FC = () => {
         </ul>
       </div>
 
-      <div className="newChatButton">
+      {/* <div className="newChatButton">
         <NewChatButton href={NEW_CHAT_ANCHOR} />
-      </div>
+      </div> */}
       {findUserPageOverlay}
     </div>
   );
