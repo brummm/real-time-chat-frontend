@@ -14,7 +14,7 @@
 
     background-color: $pallete4;
     border: 0;
-    border-radius: $borderRadius 0 0 $borderRadius;
+    border-radius: $innerBorderRadius 0 0 $innerBorderRadius;
     margin: 0;
     padding: $padding;
     flex: 1;
@@ -36,7 +36,7 @@
   button {
     @include innerShadow;
     background-color: $pallete1;
-    border-radius: 0 $borderRadius $borderRadius 0;
+    border-radius: 0 $innerBorderRadius $innerBorderRadius 0;
     box-sizing: content-box;
     color: $pallete4;
     padding: 0;

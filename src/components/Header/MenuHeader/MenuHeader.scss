@@ -20,7 +20,7 @@
     opacity: 0;
     position: fixed;
     right: 0;
-    top: $headerHeight;
+    top: $headerHeight - 1px;
     width: 16rem;
     transform: translateX(100vh);
     transition: all ease-out 0.25s;

@@ -70,7 +70,7 @@ export const MenuHeader: React.FC = () => {
       </nav>
       <PageOverlay
         hash="#credits"
-        title="Credits"
+        title="Who made it?"
         onClose={() => setShowCredits(false)}
       >
         {showCredits && <Credits />}

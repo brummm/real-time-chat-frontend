@@ -1,5 +1,45 @@
 @import '../../styles/variables.scss';
 
 .Credits {
+  padding-top: 35px;
+  > header {
+    align-items: center;
+    display: flex;
+    margin-bottom: 20px;
+    
+    figure {
+      margin-right: 13px;
+      img {
+        @include innerBorderRadius;
+        width: 100px;
+      }
+    }
 
+    div {
+      h2 {
+        font-size: 22px;
+      }
+    }
+  }
+
+  div.text {
+    margin-bottom: 46px;
+  }
+
+  footer {
+    a {
+      @include innerBorderRadius;
+      background-color: $pallete0;
+      color: $pallete4;
+      display: inline-flex;
+      font-weight: bold;
+      margin-bottom: 10px;
+      padding: 11px 14px;
+      text-decoration: none;
+
+      span {
+        margin-left: 9px;
+      }
+    }
+  }
 }

@@ -37,7 +37,7 @@ html.preventScroll {
     position: relative;
     width: 300px;
     z-index: 10;
-    header {
+    > header {
       align-items: center;
       color: $pallete1;
       justify-content: space-between;

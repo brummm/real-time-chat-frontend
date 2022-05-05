@@ -2,7 +2,7 @@
 .Button {
   display: inline-block;
   button, a {
-    @include borderRadius;
+    @include innerBorderRadius;
     align-items: center;
     background-color: $pallete1;
     color: $pallete4;

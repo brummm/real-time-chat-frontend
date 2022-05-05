@@ -1,6 +1,7 @@
 @import '../../../styles/variables.scss';
 
 .ChatMessage {
+  // filter: drop-shadow(0 1px 2px rgba(0,0,0,.5));
   @include shadow;
   @include borderRadius;
   align-self: flex-start;
@@ -8,10 +9,39 @@
   margin-bottom: 8px;
   max-width: 90%;
   padding: 16px;
+  position: relative;
+
+  $colorFromCurrentUser: #EBFEA3;
+
+  &.first:before {
+    content: "";
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    border-left: 7px solid transparent;
+    border-right: 7px solid $pallete4;
+    border-top: 5px solid $pallete4;
+    border-bottom: 5px solid transparent;
+    left: -11px;
+    top: 0;
+  }
 
   &.messageIsFromCurrentUser {
-    background-color: #EBFEA3;
+    background-color: $colorFromCurrentUser;
     align-self: flex-end;
+    &.first:before {
+      content: "";
+      border-left: 7px solid $colorFromCurrentUser;
+      border-right: 7px solid transparent;
+      border-top: 5px solid $colorFromCurrentUser;
+      border-bottom: 5px solid transparent;
+      left: auto;
+      right: -11px;
+    }
+  }
+
+  &:before {
+    
   }
 
   .userNameAndHour {

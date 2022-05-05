@@ -17,6 +17,7 @@ import NewChatButton from "../NewChatButton/NewChatButton";
 import "./ChatList.scss";
 
 const NEW_CHAT_ANCHOR = "#new-chat";
+const REFECTH_INTERVAL = 5000;
 
 export const ChatList: React.FC = () => {
   const navigate = useNavigate();
@@ -26,10 +27,19 @@ export const ChatList: React.FC = () => {
     isLoading,
     isError,
     error,
+    refetch,
   } = useQuery<Chat[], AxiosError>("CHATS", async () => {
     const { data } = await axios.get("/chats");
     return data.chats;
   });
+
+  // In a real world application, it would only bring the last updates to the chats instead of bringing everything again
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      await refetch();
+    }, REFECTH_INTERVAL);
+    return () => clearInterval(interval);
+  }, [refetch]);
 
   const {
     mutate: createChat,
