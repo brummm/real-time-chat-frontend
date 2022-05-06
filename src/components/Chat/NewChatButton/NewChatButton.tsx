@@ -8,6 +8,7 @@ export const NewChatButton: React.FC<{
   return (
     <button onClick={onClick} className="NewChatButton">
       <MessageSquareAdd size={36} />
+      <span>Start a chat</span>
     </button>
   );
 };
