@@ -9,7 +9,7 @@ interface Props {
   signInPath: string;
 }
 const AuthGuard: React.FC<Props> = ({ children, role, signInPath }) => {
-  const { isAuthenticated, isReady, user, signOut } = useAuth();
+  const { isReady, user, signOut } = useAuth();
   const navigate = useNavigate();
 
   const redirect = useCallback(() => {
