@@ -1,12 +1,14 @@
 import { MessageSquareAdd } from "@styled-icons/boxicons-solid";
-import React from "react";
+import React, { MouseEventHandler } from "react";
 
 import "./NewChatButton.scss";
-export const NewChatButton: React.FC<{ href: string }> = ({ href }) => {
+export const NewChatButton: React.FC<{
+  onClick: MouseEventHandler<HTMLButtonElement>;
+}> = ({ onClick }) => {
   return (
-    <a href={href} className="NewChatButton">
+    <button onClick={onClick} className="NewChatButton">
       <MessageSquareAdd size={36} />
-    </a>
+    </button>
   );
 };
 

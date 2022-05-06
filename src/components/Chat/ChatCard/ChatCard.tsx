@@ -47,18 +47,20 @@ export const ChatCard: React.FC<{ chat: Chat; filter?: string }> = ({
     );
   }
 
+  const otherUsers = chat.users.filter(
+    (userInChat) => userInChat._id !== user?._id
+  );
+
   return (
     <div className="ChatCard">
       <Link to={`/chats/${chat._id}`}>
-        <UserAvatar user={chat.users[0]} />
+        <UserAvatar user={otherUsers[0]} />
         <p className="data">
-          {chat.users
-            .filter((userInChat) => userInChat._id !== user?._id)
-            .map((user, index) => (
-              <span key={index} className="name">
-                @{user.userName}
-              </span>
-            ))}
+          {otherUsers.map((user, index) => (
+            <span key={index} className="name">
+              @{user.userName}
+            </span>
+          ))}
           {messageText.length !== 0 && (
             <span className="lastMessage">
               {lastMessage?.owner === user?._id && (

@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import variables from "../../../styles/variables.scss";
 import Credits from "../../Credits/Credits";
-import PageOverlay from "../../Page/PageOverlay/PageOverlay";
+import { PageOverlayHashed } from "../../Page/PageOverlay/PageOverlay";
 import "./MenuHeader.scss";
 
 export const MenuHeader: React.FC = () => {
@@ -68,13 +68,13 @@ export const MenuHeader: React.FC = () => {
           </li>
         </ul>
       </nav>
-      <PageOverlay
+      <PageOverlayHashed
         hash="#credits"
         title="Who made it?"
         onClose={() => setShowCredits(false)}
       >
         {showCredits && <Credits />}
-      </PageOverlay>
+      </PageOverlayHashed>
     </>
   );
 };

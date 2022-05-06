@@ -1,6 +1,6 @@
 @import "../../styles/variables.scss";
 
-.Chat {
+.Chat, .NoChat {
   display: grid;
   grid-template-rows: calc(100vh - 60px - $headerHeight) 60px;
 
@@ -29,5 +29,24 @@
   .messages {
     overflow-x: hidden;
     overflow-y: auto;
+  }
+}
+
+.NoChat {
+  place-items: center;
+  main {
+    max-width: 70%;
+    display: flex;
+    flex-direction: column;
+    figure {
+      margin-bottom: 25px;
+    }
+    h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    p.text {
+      margin-bottom: 45px;
+    }
   }
 }

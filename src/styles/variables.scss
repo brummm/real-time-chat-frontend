@@ -45,7 +45,7 @@ $innerBorderRadius: 4px;
 }
 
 @mixin sm {
-	@media (min-width: 480px) {
+	@media (min-width: 780px) {
 			@content;
 	}
 }

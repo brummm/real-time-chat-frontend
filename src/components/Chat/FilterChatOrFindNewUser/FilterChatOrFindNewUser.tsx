@@ -1,15 +1,10 @@
 import React, { useRef } from "react";
-import { User } from "../../../lib/models/user";
 import "./FilterChatOrFindNewUser.scss";
 
 interface Props {
   onFilter: (filter: string) => void;
-  onUserSelect: (user: User) => Promise<void>;
 }
-export const FilterChatOrFindNewUser: React.FC<Props> = ({
-  onFilter,
-  onUserSelect,
-}) => {
+export const FilterChatOrFindNewUser: React.FC<Props> = ({ onFilter }) => {
   const filter = useRef<string>();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {

@@ -11,10 +11,10 @@ import SendMessageForm, {
 
 let chatSocket: ChatSocket;
 
-interface Props {
+interface ChatProps {
   chat?: ChatModel;
 }
-export const Chat: React.FC<Props> = ({ chat }) => {
+export const Chat: React.FC<ChatProps> = ({ chat }) => {
   const [messages, setMessages] = useState(chat?.messages);
   const [users, setUsers] = useState(chat?.users);
 
