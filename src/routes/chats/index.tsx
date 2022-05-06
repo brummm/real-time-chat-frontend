@@ -5,10 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Chat } from "../../components/Chat/Chat";
 import ChatHeader from "../../components/Chat/ChatHeader/ChatHeader";
 import ChatList from "../../components/Chat/ChatList/ChatList";
-import {
-  CreateChatPageOverlay,
-  NEW_CHAT_ANCHOR,
-} from "../../components/Chat/CreateChatPageOverlay/CreateChatPageOverlay";
+import { CreateChatPageOverlay } from "../../components/Chat/CreateChatPageOverlay/CreateChatPageOverlay";
 import NewChatButton from "../../components/Chat/NewChatButton/NewChatButton";
 import { NoChat } from "../../components/Chat/NoChat";
 import ErrorMessage from "../../components/Error/ErrorMessage/ErrorMessage";
@@ -84,7 +81,11 @@ export default function ChatsRoute() {
 
   return (
     <AuthGuard signInPath="/sign-in">
-      <Page variation="top" header={chat && _Header}>
+      <Page
+        variation="top"
+        header={chat && _Header}
+        className="ChatListAndChatPage"
+      >
         {chats && chats.length === 0 && (
           <NoData>
             <p>You still have no chats.</p>

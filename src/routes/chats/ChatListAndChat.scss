@@ -2,7 +2,7 @@
 
 
 @include sm {
-  #root div.page main {
+  #root div.page.ChatListAndChatPage main {
     overflow: hidden;
   }
 }
@@ -23,6 +23,7 @@
 
   .chatList {
     background-color: rgba($pallete4, .8);
+    overflow: hidden;
   }
 
   > .chat {

@@ -1,10 +1,15 @@
 @import '../../../styles/variables.scss';
 
 .ChatList {
+  display: grid;
+  grid-template-rows: 65px auto;
+  height: calc(100vh - 60px);
+
   
   
   .list {
     padding: 16px;
+    overflow-y: scroll !important;
     .chat {
       margin-bottom: 32px;
     }
